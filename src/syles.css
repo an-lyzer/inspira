@@ -1,0 +1,92 @@
+/* Design tokens (global) */
+:root {
+	/* Colors */
+	--color-blanco: #f9f9f9;
+	--color-azul: #091629;
+	--color-dorado: #ad976c;
+	--color-amarillo: #edbb58;
+	--color-plomo: #ebebeb;
+	--color-plomoazul: #6b7d99;
+
+	/* Fonts */
+	--font-body: 'Open Sans', system-ui, -apple-system, 'Segoe UI', Roboto, Arial,
+		sans-serif;
+	--font-header: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial,
+		sans-serif;
+
+	/* Typography scale (px -> rem; base 16px) */
+	--fs-h1: 2.6125rem; /* 41.8px */
+	--fs-h2: 2.1775rem; /* 34.84px */
+	--fs-h3: 1.8144rem; /* 29.03px */
+	--fs-h4: 1.5119rem; /* 24.19px */
+	--fs-h5: 1.26rem; /* 20.16px */
+	--fs-h6: 1.05rem; /* 16.8px */
+	--fs-p: 0.875rem; /* 14px */
+}
+
+html {
+	font-size: 100%;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	background: var(--color-blanco);
+	color: var(--color-azul);
+	font-family: var(--font-body);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0;
+	line-height: 1.15;
+	font-weight: 700;
+}
+
+h1 {
+	font-size: var(--fs-h1);
+}
+
+h2 {
+	font-size: var(--fs-h2);
+}
+
+h3 {
+	font-size: var(--fs-h3);
+}
+
+h4 {
+	font-size: var(--fs-h4);
+}
+
+h5 {
+	font-size: var(--fs-h5);
+}
+
+h6 {
+	font-size: var(--fs-h6);
+}
+
+p {
+	margin: 0;
+	font-size: var(--fs-p);
+	line-height: 1.6;
+}
+
+a {
+	color: inherit;
+}
+
+button {
+	font: inherit;
+}
+
