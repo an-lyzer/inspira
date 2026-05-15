@@ -1,8 +1,5 @@
 <script setup>
 import { onBeforeUnmount, onMounted, ref } from 'vue'
-import Header from './header.vue'
-import Footer from './footer.vue'
-
 import karlaImgUrl from './assets/images/karlafoto.jpeg'
 import percyImgUrl from './assets/images/prueba 2 tovar.png'
 

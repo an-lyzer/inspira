@@ -4,7 +4,7 @@ import Header from './header.vue'
 import Footer from './footer.vue'
 import Miembros from './Miembros.vue'
 import brandcontacto from './brandcontacto.vue'
-import bannerImgUrl from './assets/images/close-up-business-people-working-with-business-document-discussion-meeting.jpg'
+import bannerImgUrl from './assets/images/close-up-business.jpg'
 import descripcionImgUrl from './assets/images/executives-preparing-meeting.jpg'
 import ofrecemosImgUrl from './assets/images/businessmen-using-touchpad-meeting.jpg'
 

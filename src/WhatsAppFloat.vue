@@ -1,5 +1,5 @@
 <script setup>
-import whatsappLogoUrl from './assets/images/vecteezy_whatsapp-logo-png-whatsapp-icon-png-whatsapp-transparent_18930634.png'
+import whatsappLogoUrl from './assets/images/vecteezy_whatsapp.png'
 
 const whatsappPhone = '51991686073'
 const whatsappHref = `https://wa.me/${whatsappPhone}`
