@@ -64,11 +64,11 @@ onBeforeUnmount(() => {
             <img class="media" :src="descripcionImgUrl" alt="" />
         </div>
         <div class="col2">
-            <h6>
+            <h5>
                 Diseñamos estructuras patrimoniales eficientes para proteger, ordenar y proyectar el patrimonio familiar
                 y
                 empresarial a largo plazo.
-            </h6>
+            </h5>
         </div>
     </div>
 
@@ -200,7 +200,7 @@ onBeforeUnmount(() => {
     padding: 52px 72px;
 }
 
-.descripcion .col2 h6 {
+.descripcion .col2 h5 {
     margin: 0;
     max-width: 620px;
 

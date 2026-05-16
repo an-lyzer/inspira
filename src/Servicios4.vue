@@ -64,10 +64,10 @@ onBeforeUnmount(() => {
             <img class="media" :src="descripcionImgUrl" alt="" />
         </div>
         <div class="col2">
-            <h6>
+            <h5>
                 Optimizamos procesos y estructuras de gestión para mejorar la eficiencia operativa, financiera y
                 tecnológica de las organizaciones.
-            </h6>
+            </h5>
         </div>
     </div>
 
@@ -199,7 +199,7 @@ onBeforeUnmount(() => {
     padding: 52px 72px;
 }
 
-.descripcion .col2 h6 {
+.descripcion .col2 h5 {
     margin: 0;
     max-width: 620px;
 

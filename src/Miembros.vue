@@ -72,12 +72,11 @@ onBeforeUnmount(() => {
 
                     <div class="specialistInfo">
                         <h6 class="specialistRole">
-                            Ejecutiva Senior Planeamiento <br />
-                            Estratégico y Finanzas Corporativas
+                           Ejecutiva Senior en Estrategia <br> y Finanzas Corporativas
                         </h6>
                         <h5 class="specialistName">Karla Chumpitaz</h5>
                         <h6 class="specialistBio">
-                            Administradora de Empresas (USIL), EMBA (INCAE Business School) y Director Independiente (ESADE).
+                          Administradora de Empresas por USIL, con Maestría Ejecutiva por INCAE Business School y Directora Independiente por ESADE. Más de 18 años liderando finanzas corporativas, estrategia, gobierno corporativo y transformación empresarial.
                         </h6>
                     </div>
                 </article>
@@ -101,13 +100,11 @@ onBeforeUnmount(() => {
 
                     <div class="specialistInfo">
                         <h6 class="specialistRole">
-                            Ejecutivo Senior Finanzas <br />
-                            Corporativas
+                            Ejecutivo Senior en Finanzas, <br>Contabilidad y tributación 
                         </h6>
                         <h5 class="specialistName">Percy Tovar</h5>
                         <h6 class="specialistBio">
-                            Contador Público Colegiado, poseé un MBA (ESAN) y doctorado en Administración de
-                            Negocios.
+                            Contador Público Colegiado, MBA por ESAN y doctorado en Administración de Negocios. Más de 25 años de experiencia en gestión financiera, contable, tributaria, implementación SAP y optimización de procesos corporativos.
                         </h6>
                     </div>
                 </article>
@@ -271,8 +268,9 @@ onBeforeUnmount(() => {
     font-family: var(--font-header);
     font-size: 1.18rem;
     font-weight: 600;
-    line-height: 1.25;
+    line-height: 1.35;
     min-height: 2.5em;
+    opacity: 1;
 }
 
 .specialistName {
@@ -284,11 +282,11 @@ onBeforeUnmount(() => {
 
 .specialistBio {
     margin-top: 14px;
-    font-size: 1.25rem;
     line-height: 1.35;
     color: rgba(9, 22, 41, 0.88);
     max-width: 28rem;
     font-weight: 400;
+    opacity: 0.7;
 }
 
 @media (max-width: 1120px) {

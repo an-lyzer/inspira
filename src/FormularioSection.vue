@@ -5,6 +5,62 @@ import bgUrl from './assets/images/imagenplaneacion.jpg'
 const formRef = ref(null)
 const formVisible = ref(false)
 
+const form = ref({
+    nombre: '',
+    correo: '',
+    telefono: '',
+    servicio: '',
+    descripcion: '',
+})
+
+const submitting = ref(false)
+const submitMessage = ref('')
+const submitError = ref(false)
+
+async function handleSubmit() {
+    submitMessage.value = ''
+    submitError.value = false
+
+    const endpoint = import.meta.env.VITE_GOOGLE_SHEETS_WEBAPP_URL
+    if (!endpoint) {
+        submitError.value = true
+        submitMessage.value = 'Falta configurar el envío (VITE_GOOGLE_SHEETS_WEBAPP_URL).'
+        return
+    }
+
+    submitting.value = true
+
+    try {
+        const payload = new URLSearchParams()
+        payload.set('nombre', form.value.nombre ?? '')
+        payload.set('correo', form.value.correo ?? '')
+        payload.set('telefono', form.value.telefono ?? '')
+        payload.set('servicio', form.value.servicio ?? '')
+        payload.set('descripcion', form.value.descripcion ?? '')
+        payload.set('sentAt', new Date().toISOString())
+        if (typeof window !== 'undefined') {
+            payload.set('page', window.location.href)
+        }
+
+        // Nota: Apps Script suele requerir `mode: 'no-cors'` si no habilitas CORS.
+        // En ese modo no podemos leer la respuesta, pero el envío se realiza.
+        await fetch(endpoint, {
+            method: 'POST',
+            mode: 'no-cors',
+            body: payload,
+        })
+
+        submitMessage.value = '¡Gracias! Te contactaremos pronto.'
+        form.value = { nombre: '', correo: '', telefono: '', servicio: '', descripcion: '' }
+    } catch (error) {
+        submitError.value = true
+        submitMessage.value = 'No se pudo enviar. Intenta nuevamente.'
+        console.error('Error enviando a Google Sheets:', error)
+    } finally {
+        submitting.value = false
+    }
+}
+
 let formObserver
 
 onMounted(() => {
@@ -78,28 +134,50 @@ onBeforeUnmount(() => {
                         asesoría ahora.
                     </h3>
 
-                    <form class="form" @submit.prevent>
+                    <form class="form" @submit.prevent="handleSubmit">
                         <label class="field">
                             <span class="label">Nombre/Empresa</span>
-                            <input class="input" type="text" name="nombre" placeholder="Nombre/Empresa" />
+                            <input class="input" type="text" name="nombre" placeholder="Nombre/Empresa"
+                                v-model.trim="form.nombre" autocomplete="organization" />
                         </label>
 
                         <label class="field">
                             <span class="label">Correo *</span>
-                            <input class="input" type="email" name="correo" placeholder="Correo" required />
+                            <input class="input" type="email" name="correo" placeholder="Correo" required
+                                v-model.trim="form.correo" autocomplete="email" />
                         </label>
 
                         <label class="field">
                             <span class="label">Teléfono *</span>
-                            <input class="input" type="tel" name="telefono" placeholder="Teléfono" required />
+                            <input class="input" type="tel" name="telefono" placeholder="Teléfono" required
+                                v-model.trim="form.telefono" autocomplete="tel" />
                         </label>
 
                         <label class="field">
                             <span class="label">Servicio a Consultar</span>
-                            <input class="input" type="text" name="servicio" placeholder="Servicio a consultar" />
+                            <select class="input select" name="servicio" v-model="form.servicio" required>
+                                <option value="" disabled>Selecciona un servicio</option>
+                                <option value="Transformación Operacional">Transformación Operacional</option>
+                                <option value="Asesoría Financiera">Asesoría Financiera</option>
+                                <option value="Estructuración Patrimonial">Estructuración Patrimonial</option>
+                                <option value="Gobierno Corporativo">Gobierno Corporativo</option>
+                            </select>
                         </label>
 
-                        <button class="submit" type="submit">Enviar</button>
+                        <label class="field">
+                            <span class="label">Descripción</span>
+                            <textarea class="input textarea" name="descripcion" placeholder="Cuéntanos más detalles..."
+                                v-model.trim="form.descripcion" rows="3"></textarea>
+                        </label>
+
+                        <button class="submit" type="submit" :disabled="submitting">
+                            {{ submitting ? 'Enviando…' : 'Enviar' }}
+                        </button>
+
+                        <p v-if="submitMessage" class="formStatus" :class="{ 'formStatus--error': submitError }"
+                            role="status" aria-live="polite">
+                            {{ submitMessage }}
+                        </p>
                     </form>
                 </div>
             </div>
@@ -243,7 +321,39 @@ onBeforeUnmount(() => {
 }
 
 .input::placeholder {
-    color: rgba(9, 22, 41, 0.35);
+    color: rgba(9, 22, 41, 0.4);
+    font-weight: 400;
+}
+
+.select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23091629%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 16px;
+    padding-right: 40px;
+    
+    background-color: var(--color-plomo);
+    color: var(--color-azul);
+}
+
+.select option {
+    background-color: var(--color-blanco);
+    color: var(--color-azul);
+}
+
+.select:invalid {
+    color: rgba(9, 22, 41, 0.4);
+    font-weight: 400;
+}
+
+.textarea {
+    height: auto;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    resize: vertical;
+    font-family: var(--font-body);
     font-weight: 400;
 }
 
@@ -264,6 +374,23 @@ onBeforeUnmount(() => {
 .submit:focus-visible {
     background: var(--color-dorado);
     color: var(--color-blanco);
+}
+
+.submit:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.formStatus {
+    margin-top: 10px;
+    font-size: var(--fs-p);
+    color: var(--color-plomoazul);
+    text-align: center;
+}
+
+.formStatus--error {
+    color: var(--color-dorado);
+    font-weight: 600;
 }
 
 @media (max-width: 820px) {
