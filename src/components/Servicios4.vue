@@ -4,9 +4,9 @@ import Header from './header.vue'
 import Footer from './footer.vue'
 import Miembros from './Miembros.vue'
 import brandcontacto from './brandcontacto.vue'
-import bannerImgUrl from './assets/images/close-up-business.jpg'
-import descripcionImgUrl from './assets/images/executives-preparing-meeting.jpg'
-import ofrecemosImgUrl from './assets/images/businessmen-using-touchpad-meeting.jpg'
+import bannerImgUrl from '../assets/images/close-up-business.jpg'
+import descripcionImgUrl from '../assets/images/executives-preparing-meeting.jpg'
+import ofrecemosImgUrl from '../assets/images/businessmen-using-touchpad-meeting.jpg'
 
 const ofrecemosRef = ref(null)
 const ofrecemosVisible = ref(false)
@@ -50,11 +50,11 @@ onBeforeUnmount(() => {
     <Header />
 
     <section class="servicesHero" :style="{ '--services-hero-image': `url(${bannerImgUrl})` }"
-        aria-label="Estructuración Patrimonial">
+        aria-label="Transformación Operacional">
         <div class="servicesHeroInner">
             <h1 class="servicesHeroTitle">
                 <span class="servicesHeroBar" aria-hidden="true"></span>
-                Estructuración Patrimonial
+                Transformación Operacional
             </h1>
         </div>
     </section>
@@ -65,9 +65,8 @@ onBeforeUnmount(() => {
         </div>
         <div class="col2">
             <h5>
-                Diseñamos estructuras patrimoniales eficientes para proteger, ordenar y proyectar el patrimonio familiar
-                y
-                empresarial a largo plazo.
+                Optimizamos procesos y estructuras de gestión para mejorar la eficiencia operativa, financiera y
+                tecnológica de las organizaciones.
             </h5>
         </div>
     </div>
@@ -86,7 +85,7 @@ onBeforeUnmount(() => {
                             <path fill="currentColor" d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
                         </svg>
                     </span>
-                    <span class="ofrecemosText">Holding familiar y reorganización societaria</span>
+                    <span class="ofrecemosText">Optimización y rediseño de procesos</span>
                 </li>
                 <li class="ofrecemosItem">
                     <span class="ofrecemosCheck" aria-hidden="true">
@@ -94,7 +93,7 @@ onBeforeUnmount(() => {
                             <path fill="currentColor" d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
                         </svg>
                     </span>
-                    <span class="ofrecemosText">Protección patrimonial y sucesoria</span>
+                    <span class="ofrecemosText">Implementación de ERP y herramientas de gestión</span>
                 </li>
                 <li class="ofrecemosItem">
                     <span class="ofrecemosCheck" aria-hidden="true">
@@ -102,7 +101,7 @@ onBeforeUnmount(() => {
                             <path fill="currentColor" d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
                         </svg>
                     </span>
-                    <span class="ofrecemosText">Optimización tributaria</span>
+                    <span class="ofrecemosText">Automatización y dashboards gerenciales</span>
                 </li>
                 <li class="ofrecemosItem">
                     <span class="ofrecemosCheck" aria-hidden="true">
@@ -110,7 +109,7 @@ onBeforeUnmount(() => {
                             <path fill="currentColor" d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
                         </svg>
                     </span>
-                    <span class="ofrecemosText">Protocolos familiares</span>
+                    <span class="ofrecemosText">Back office financiero, contable y legal</span>
                 </li>
                 <li class="ofrecemosItem">
                     <span class="ofrecemosCheck" aria-hidden="true">
@@ -118,7 +117,7 @@ onBeforeUnmount(() => {
                             <path fill="currentColor" d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
                         </svg>
                     </span>
-                    <span class="ofrecemosText">Estructuración de inversiones y activos</span>
+                    <span class="ofrecemosText">Gestión del cambio y eficiencia operativa</span>
                 </li>
             </ul>
         </div>

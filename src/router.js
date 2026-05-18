@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import Home from './Home.vue'
-import Contacto from './Contacto.vue'
-import Asesoriafinanciera from './Servicios1.vue'
-import EstructuracionPatrimonial from './Servicios2.vue'
-import GobiernoCorporativo from './Servicios3.vue'
-import TransformacionOperacional from './Servicios4.vue'
-import Nosotros from './Nosotros.vue'
+import Home from './components/Home.vue'
+import Contacto from './components/Contacto.vue'
+import Asesoriafinanciera from './components/Servicios1.vue'
+import EstructuracionPatrimonial from './components/Servicios2.vue'
+import GobiernoCorporativo from './components/Servicios3.vue'
+import TransformacionOperacional from './components/Servicios4.vue'
+import Nosotros from './components/Nosotros.vue'
 
 const router = createRouter({
     history: createWebHistory(),

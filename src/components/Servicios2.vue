@@ -4,10 +4,9 @@ import Header from './header.vue'
 import Footer from './footer.vue'
 import Miembros from './Miembros.vue'
 import brandcontacto from './brandcontacto.vue'
-import bannerImgUrl from './assets/images/close-up-business.jpg'
-import descripcionImgUrl from './assets/images/executives-preparing-meeting.jpg'
-import ofrecemosImgUrl from './assets/images/businessmen-using-touchpad-meeting.jpg'
-import Brandcontacto from './brandcontacto.vue'
+import bannerImgUrl from '../assets/images/close-up-business.jpg'
+import descripcionImgUrl from '../assets/images/executives-preparing-meeting.jpg'
+import ofrecemosImgUrl from '../assets/images/businessmen-using-touchpad-meeting.jpg'
 
 const ofrecemosRef = ref(null)
 const ofrecemosVisible = ref(false)
@@ -51,11 +50,11 @@ onBeforeUnmount(() => {
     <Header />
 
     <section class="servicesHero" :style="{ '--services-hero-image': `url(${bannerImgUrl})` }"
-        aria-label="Asesoría Financiera">
+        aria-label="Estructuración Patrimonial">
         <div class="servicesHeroInner">
             <h1 class="servicesHeroTitle">
                 <span class="servicesHeroBar" aria-hidden="true"></span>
-                Asesoría Financiera
+                Estructuración Patrimonial
             </h1>
         </div>
     </section>
@@ -66,8 +65,9 @@ onBeforeUnmount(() => {
         </div>
         <div class="col2">
             <h5>
-                Soluciones financieras estratégicas para optimizar la rentabilidad, liquidez y crecimiento del negocio.
-                Incluye valorización de empresas, planificación financiera y control de gestión.
+                Diseñamos estructuras patrimoniales eficientes para proteger, ordenar y proyectar el patrimonio familiar
+                y
+                empresarial a largo plazo.
             </h5>
         </div>
     </div>
@@ -86,7 +86,7 @@ onBeforeUnmount(() => {
                             <path fill="currentColor" d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
                         </svg>
                     </span>
-                    <span class="ofrecemosText">Planeamiento financiero y presupuestal</span>
+                    <span class="ofrecemosText">Holding familiar y reorganización societaria</span>
                 </li>
                 <li class="ofrecemosItem">
                     <span class="ofrecemosCheck" aria-hidden="true">
@@ -94,7 +94,7 @@ onBeforeUnmount(() => {
                             <path fill="currentColor" d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
                         </svg>
                     </span>
-                    <span class="ofrecemosText">Control de gestión y KPIs</span>
+                    <span class="ofrecemosText">Protección patrimonial y sucesoria</span>
                 </li>
                 <li class="ofrecemosItem">
                     <span class="ofrecemosCheck" aria-hidden="true">
@@ -102,7 +102,7 @@ onBeforeUnmount(() => {
                             <path fill="currentColor" d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
                         </svg>
                     </span>
-                    <span class="ofrecemosText">Modelamiento financiero y flujo de caja</span>
+                    <span class="ofrecemosText">Optimización tributaria</span>
                 </li>
                 <li class="ofrecemosItem">
                     <span class="ofrecemosCheck" aria-hidden="true">
@@ -110,7 +110,7 @@ onBeforeUnmount(() => {
                             <path fill="currentColor" d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
                         </svg>
                     </span>
-                    <span class="ofrecemosText">Evaluación de inversiones y rentabilidad</span>
+                    <span class="ofrecemosText">Protocolos familiares</span>
                 </li>
                 <li class="ofrecemosItem">
                     <span class="ofrecemosCheck" aria-hidden="true">
@@ -118,27 +118,9 @@ onBeforeUnmount(() => {
                             <path fill="currentColor" d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
                         </svg>
                     </span>
-                    <span class="ofrecemosText">Reestructuración financiera</span>
+                    <span class="ofrecemosText">Estructuración de inversiones y activos</span>
                 </li>
-                <li class="ofrecemosItem">
-                    <span class="ofrecemosCheck" aria-hidden="true">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path fill="currentColor" d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
-                        </svg>
-                    </span>
-                    <span class="ofrecemosText">Optimización de costos</span>
-                </li>
-                <li class="ofrecemosItem">
-                    <span class="ofrecemosCheck" aria-hidden="true">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path fill="currentColor" d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
-                        </svg>
-                    </span>
-                    <span class="ofrecemosText">Procesos de inversión</span>
-                </li>
-
             </ul>
-
         </div>
 
         <div class="col2">

@@ -4,9 +4,9 @@ import Header from './header.vue'
 import Footer from './footer.vue'
 import Miembros from './Miembros.vue'
 import brandcontacto from './brandcontacto.vue'
-import bannerImgUrl from './assets/images/close-up-business.jpg'
-import descripcionImgUrl from './assets/images/executives-preparing-meeting.jpg'
-import ofrecemosImgUrl from './assets/images/businessmen-using-touchpad-meeting.jpg'
+import bannerImgUrl from '../assets/images/close-up-business.jpg'
+import descripcionImgUrl from '../assets/images/executives-preparing-meeting.jpg'
+import ofrecemosImgUrl from '../assets/images/businessmen-using-touchpad-meeting.jpg'
 
 const ofrecemosRef = ref(null)
 const ofrecemosVisible = ref(false)
@@ -50,11 +50,11 @@ onBeforeUnmount(() => {
     <Header />
 
     <section class="servicesHero" :style="{ '--services-hero-image': `url(${bannerImgUrl})` }"
-        aria-label="Transformación Operacional">
+        aria-label="Gobierno Corporativo">
         <div class="servicesHeroInner">
             <h1 class="servicesHeroTitle">
                 <span class="servicesHeroBar" aria-hidden="true"></span>
-                Transformación Operacional
+                Gobierno Corporativo
             </h1>
         </div>
     </section>
@@ -65,8 +65,9 @@ onBeforeUnmount(() => {
         </div>
         <div class="col2">
             <h5>
-                Optimizamos procesos y estructuras de gestión para mejorar la eficiencia operativa, financiera y
-                tecnológica de las organizaciones.
+                Fortalecemos la institucionalización empresarial mediante modelos de gobierno corporativo que promueven
+                transparencia, continuidad y toma de decisiones en empresas familiares y corporativas con crecimiento
+                sostenible.
             </h5>
         </div>
     </div>
@@ -85,7 +86,7 @@ onBeforeUnmount(() => {
                             <path fill="currentColor" d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
                         </svg>
                     </span>
-                    <span class="ofrecemosText">Optimización y rediseño de procesos</span>
+                    <span class="ofrecemosText">Implementación de directorios y consejos consultivos</span>
                 </li>
                 <li class="ofrecemosItem">
                     <span class="ofrecemosCheck" aria-hidden="true">
@@ -93,7 +94,7 @@ onBeforeUnmount(() => {
                             <path fill="currentColor" d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
                         </svg>
                     </span>
-                    <span class="ofrecemosText">Implementación de ERP y herramientas de gestión</span>
+                    <span class="ofrecemosText">Protocolos familiares y gobierno de accionistas</span>
                 </li>
                 <li class="ofrecemosItem">
                     <span class="ofrecemosCheck" aria-hidden="true">
@@ -101,7 +102,7 @@ onBeforeUnmount(() => {
                             <path fill="currentColor" d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
                         </svg>
                     </span>
-                    <span class="ofrecemosText">Automatización y dashboards gerenciales</span>
+                    <span class="ofrecemosText">Políticas corporativas y controles internos</span>
                 </li>
                 <li class="ofrecemosItem">
                     <span class="ofrecemosCheck" aria-hidden="true">
@@ -109,7 +110,7 @@ onBeforeUnmount(() => {
                             <path fill="currentColor" d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
                         </svg>
                     </span>
-                    <span class="ofrecemosText">Back office financiero, contable y legal</span>
+                    <span class="ofrecemosText">Estructura organizacional y toma de decisiones</span>
                 </li>
                 <li class="ofrecemosItem">
                     <span class="ofrecemosCheck" aria-hidden="true">
@@ -117,7 +118,7 @@ onBeforeUnmount(() => {
                             <path fill="currentColor" d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
                         </svg>
                     </span>
-                    <span class="ofrecemosText">Gestión del cambio y eficiencia operativa</span>
+                    <span class="ofrecemosText">Acompañamiento estratégico a directorios y gerencia</span>
                 </li>
             </ul>
         </div>

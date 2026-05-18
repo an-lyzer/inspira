@@ -1,6 +1,6 @@
 <script setup>
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
-import logoUrl from './assets/images/logo.jpeg'
+import logoUrl from '../assets/images/logo.jpeg'
 
 const isServicesOpen = ref(false)
 const servicesWrapRef = ref(null)

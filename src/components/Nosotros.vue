@@ -1,8 +1,8 @@
 <script setup>
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import Header from './header.vue'
-import heroBgUrl from './assets/images/business-team-concept.jpg'
-import misionIconUrl from './assets/images/vecteezy_missile.svg'
+import heroBgUrl from '../assets/images/business-team-concept.jpg'
+import misionIconUrl from '../assets/images/vecteezy_missile.svg'
 import Miembros from './Miembros.vue';
 import Footer from './footer.vue';
 

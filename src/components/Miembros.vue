@@ -1,7 +1,7 @@
 <script setup>
 import { onBeforeUnmount, onMounted, ref } from 'vue'
-import karlaImgUrl from './assets/images/karlafoto.jpeg'
-import percyImgUrl from './assets/images/prueba 2 tovar.png'
+import karlaImgUrl from '../assets/images/karlafoto.jpeg'
+import percyImgUrl from '../assets/images/prueba 2 tovar.png'
 
 const specialistsRef = ref(null)
 const specialistsVisible = ref(false)

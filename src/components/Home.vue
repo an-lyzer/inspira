@@ -2,15 +2,15 @@
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import Header from './header.vue'
 import Footer from './footer.vue'
-import heroImgUrl from './assets/images/img1home.png'
-import asesoria1 from './assets/images/asesoria1.jpg'
-import fotoperfil from './assets/images/fotoperfil1.jpg'
-import servicesBgUrl from './assets/images/imagenplaneacion.jpg'
-import avatarPlaceholderUrl from './assets/images/logo.jpeg'
+import heroImgUrl from '../assets/images/img1home.png'
+import asesoria1 from '../assets/images/asesoria1.jpg'
+import fotoperfil from '../assets/images/fotoperfil1.jpg'
+import servicesBgUrl from '../assets/images/imagenplaneacion.jpg'
+import avatarPlaceholderUrl from '../assets/images/logo.jpeg'
 import FormularioSection from './FormularioSection.vue'
 import Miembros from './Miembros.vue'
-import imagen2k from './assets/images/home/imageninicial2k.png'
-import nueva2k from './assets/images/home/nueva-imagen2k.jpg'
+import imagen2k from '../assets/images/home/imageninicial2k.png'
+import nueva2k from '../assets/images/home/nueva-imagen2k.jpg'
 
 const servicesRef = ref(null)
 const servicesVisible = ref(false)

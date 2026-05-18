@@ -1,6 +1,6 @@
 <script setup>
 import { onBeforeUnmount, onMounted, ref } from 'vue'
-import bgUrl from './assets/images/imagenplaneacion.jpg'
+import bgUrl from '../assets/images/imagenplaneacion.jpg'
 
 const formRef = ref(null)
 const formVisible = ref(false)

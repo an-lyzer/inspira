@@ -1,8 +1,8 @@
 <script setup>
 import Header from './header.vue'
 import Footer from './footer.vue'
-import heroBgUrl from './assets/images/apretonmanos.jpg'
-import logoUrl from './assets/images/logo.jpeg'
+import heroBgUrl from '../assets/images/apretonmanos.jpg'
+import logoUrl from '../assets/images/logo.jpeg'
 import FormularioSection from './FormularioSection.vue'
 </script>
 

@@ -1,6 +1,6 @@
 <script setup>
 import { onBeforeUnmount, onMounted, ref } from 'vue'
-import heroBgUrl from './assets/images/executives-preparing-meeting.jpg'
+import heroBgUrl from '../assets/images/executives-preparing-meeting.jpg'
 
 const brandHeroRef = ref(null)
 const brandHeroVisible = ref(false)
