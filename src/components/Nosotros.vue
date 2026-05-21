@@ -7,40 +7,74 @@ import Miembros from './Miembros.vue';
 import Footer from './footer.vue';
 
 const valoresRef = ref(null)
-const valoresVisible = ref(false)
 
-let valoresObserver
+let rafId
 
-onMounted(() => {
-    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
-        valoresVisible.value = true
+const clamp01 = (value) => Math.min(1, Math.max(0, value))
+
+const smoothstep = (t) => {
+    const x = clamp01(t)
+    return x * x * (3 - 2 * x)
+}
+
+const revealProgressForTop = (el, startVh = 1.15, endVh = 0.45) => {
+    if (!el) return 1
+    const rect = el.getBoundingClientRect()
+    const vh = window.innerHeight || 1
+    const startPx = vh * startVh
+    const endPx = vh * endVh
+    const raw = (startPx - rect.top) / (startPx - endPx)
+    return clamp01(raw)
+}
+
+const updateScrollFx = () => {
+    rafId = undefined
+    if (typeof window === 'undefined') return
+
+    const section = valoresRef.value
+    if (!section) return
+
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches
+    if (reduceMotion) {
+        section.style.setProperty('--valores-title-opacity', '1')
+        section.style.setProperty('--valores-title-y', '0px')
+        section.style.setProperty('--valores-cards-opacity', '1')
+        section.style.setProperty('--valores-cards-y', '0px')
         return
     }
 
-    valoresObserver = new IntersectionObserver(
-        (entries) => {
-            const entry = entries[0]
-            if (!entry?.isIntersecting) return
-            if (entry.intersectionRatio < 0.2) return
+    const eased = smoothstep(revealProgressForTop(section))
+    const minOpacity = 0.25
+    const opacity = minOpacity + (1 - minOpacity) * eased
+    const titleY = -18 + 18 * eased
+    const cardsY = 32 * (1 - eased)
 
-            valoresVisible.value = true
-            valoresObserver?.disconnect()
-            valoresObserver = undefined
-        },
-        {
-            threshold: 0.2,
-            rootMargin: '0px 0px -35% 0px'
-        }
-    )
+    section.style.setProperty('--valores-title-opacity', `${opacity}`)
+    section.style.setProperty('--valores-title-y', `${titleY}px`)
+    section.style.setProperty('--valores-cards-opacity', `${opacity}`)
+    section.style.setProperty('--valores-cards-y', `${cardsY}px`)
+}
 
-    if (valoresRef.value) {
-        valoresObserver.observe(valoresRef.value)
-    }
+const scheduleScrollFx = () => {
+    if (rafId != null) return
+    rafId = window.requestAnimationFrame(updateScrollFx)
+}
+
+onMounted(() => {
+    if (typeof window === 'undefined') return
+    updateScrollFx()
+    window.addEventListener('scroll', scheduleScrollFx, { passive: true })
+    window.addEventListener('resize', scheduleScrollFx)
 })
 
 onBeforeUnmount(() => {
-    valoresObserver?.disconnect()
-    valoresObserver = undefined
+    if (typeof window === 'undefined') return
+    window.removeEventListener('scroll', scheduleScrollFx)
+    window.removeEventListener('resize', scheduleScrollFx)
+    if (rafId != null) {
+        window.cancelAnimationFrame(rafId)
+        rafId = undefined
+    }
 })
 </script>
 
@@ -103,7 +137,7 @@ onBeforeUnmount(() => {
         </div>
 
     </div>
-    <div ref="valoresRef" class="valores" :class="{ 'valores--visible': valoresVisible }">
+    <div ref="valoresRef" class="valores">
         <div class="valores_inner">
             <div class="valoresTitle">
                 <h2>Nuestros valores</h2>
@@ -306,7 +340,7 @@ onBeforeUnmount(() => {
 .vision h6 {
     margin: 22px 0 0;
     max-width: 360px;
-    font-weight: 500;
+    font-weight: 400;
     line-height: 1.55;
     color: var(--color-azul);
 }
@@ -330,6 +364,10 @@ onBeforeUnmount(() => {
     padding: 84px 0 96px;
     background: var(--color-azul);
     color: var(--color-blanco);
+    --valores-title-opacity: 1;
+    --valores-title-y: 0px;
+    --valores-cards-opacity: 1;
+    --valores-cards-y: 0px;
 }
 
 @supports (background: color-mix(in srgb, black, white)) {
@@ -348,14 +386,9 @@ onBeforeUnmount(() => {
 }
 
 .valoresTitle {
-    opacity: 0;
-    transform: translateY(-18px);
-    transition: opacity 520ms ease, transform 520ms ease;
-}
-
-.valores--visible .valoresTitle {
-    opacity: 1;
-    transform: translateY(0);
+    opacity: var(--valores-title-opacity);
+    transform: translateY(var(--valores-title-y));
+    transition: opacity 160ms linear, transform 160ms linear;
 }
 
 .valores_inner h2 {
@@ -398,16 +431,10 @@ onBeforeUnmount(() => {
     display: grid;
     justify-items: center;
     align-content: start;
-    opacity: 0;
-    --card-translate-y: 32px;
-    transform: translateY(var(--card-translate-y));
+    opacity: var(--valores-cards-opacity);
+    transform: translateY(var(--valores-cards-y));
     will-change: transform, opacity;
-    transition: opacity 620ms ease, transform 620ms ease;
-}
-
-.valores--visible .valorCard {
-    opacity: 1;
-    --card-translate-y: 0px;
+    transition: opacity 160ms linear, transform 160ms linear;
 }
 
 .valorIcon {

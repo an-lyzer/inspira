@@ -6,35 +6,42 @@ import logoUrl from '../assets/images/logo.jpeg'
     <footer class="siteFooter" aria-label="Pie de página">
         <div class="footerContainer">
             <div class="footerBrand">
-                <a class="footerBrandLink" href="#" aria-label="Inspira Financial Capital">
+                <RouterLink class="footerBrandLink" :to="{ name: 'home' }" aria-label="Inspira Financial Capital">
                     <img class="footerLogo" :src="logoUrl" alt="Inspira Financial Capital" />
-                </a>
+                </RouterLink>
                 <p class="footerCopy">© 2026 Inspira Financial Capital. All rights reserved</p>
             </div>
 
             <div class="footerCol">
                 <h4 class="footerTitle">Servicios</h4>
                 <ul class="footerList">
-                    <li><a class="footerLink" href="#">Asesoría Financiera</a></li>
-                    <li><a class="footerLink" href="#">Estructuración Patrimonial</a></li>
-                    <li><a class="footerLink" href="#">Gobierno Corporativo</a></li>
-                    <li><a class="footerLink" href="#">Transformación Operacional</a></li>
+                    <li>
+                        <RouterLink class="footerLink" :to="{ name: 'Asesoriafinanciera' }">Asesoría Financiera</RouterLink>
+                    </li>
+                    <li>
+                        <RouterLink class="footerLink" :to="{ name: 'estructuracionPatrimonial' }">Estructuración Patrimonial</RouterLink>
+                    </li>
+                    <li>
+                        <RouterLink class="footerLink" :to="{ name: 'gobiernoCorporativo' }">Gobierno Corporativo</RouterLink>
+                    </li>
+                    <li>
+                        <RouterLink class="footerLink" :to="{ name: 'transformacionOperacional' }">Transformación Operacional</RouterLink>
+                    </li>
                 </ul>
             </div>
 
             <div class="footerCol">
                 <h4 class="footerTitle">Acerca de</h4>
                 <ul class="footerList">
-                    <li><a class="footerLink" href="#">Nosotros</a></li>
-                    <li><a class="footerLink" href="/miembros">Miembros</a></li>
-                    <li><a class="footerLink" href="#">Contacto</a></li>
+                    <li><RouterLink class="footerLink" :to="{ name: 'nosotros' }">Nosotros</RouterLink></li>
+                    <li><RouterLink class="footerLink" :to="{ name: 'contacto' }">Contacto</RouterLink></li>
                 </ul>
             </div>
 
             <div class="footerCol">
                 <h4 class="footerTitle">Ayuda</h4>
                 <ul class="footerList">
-                    <li><a class="footerLink" href="#">Preguntas</a></li>
+                    <!-- <li><a class="footerLink" href="#">Preguntas</a></li> -->
                     <li><a class="footerLink" href="#">Terms of service</a></li>
                     <li><a class="footerLink" href="#">Legal</a></li>
                     <li><a class="footerLink" href="#">Privacy Policy</a></li>

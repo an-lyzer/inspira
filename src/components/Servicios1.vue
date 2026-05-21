@@ -10,40 +10,70 @@ import ofrecemosImgUrl from '../assets/images/businessmen-using-touchpad-meeting
 import Brandcontacto from './brandcontacto.vue'
 
 const ofrecemosRef = ref(null)
-const ofrecemosVisible = ref(false)
 
-let ofrecemosObserver
+let rafId
 
-onMounted(() => {
-    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
-        ofrecemosVisible.value = true
+const clamp01 = (value) => Math.min(1, Math.max(0, value))
+
+const smoothstep = (t) => {
+    const x = clamp01(t)
+    return x * x * (3 - 2 * x)
+}
+
+const revealProgressForTop = (el, startVh = 1.15, endVh = 0.45) => {
+    if (!el) return 1
+    const rect = el.getBoundingClientRect()
+    const vh = window.innerHeight || 1
+    const startPx = vh * startVh
+    const endPx = vh * endVh
+    const raw = (startPx - rect.top) / (startPx - endPx)
+    return clamp01(raw)
+}
+
+const updateScrollFx = () => {
+    rafId = undefined
+    if (typeof window === 'undefined') return
+
+    const section = ofrecemosRef.value
+    if (!section) return
+
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches
+    if (reduceMotion) {
+        section.style.setProperty('--ofrecemos-opacity', '1')
+        section.style.setProperty('--ofrecemos-left-x', '0px')
+        section.style.setProperty('--ofrecemos-right-x', '0px')
         return
     }
 
-    ofrecemosObserver = new IntersectionObserver(
-        (entries) => {
-            const entry = entries[0]
-            if (!entry?.isIntersecting) return
-            if (entry.intersectionRatio < 0.2) return
+    const eased = smoothstep(revealProgressForTop(section))
+    const minOpacity = 0.35
+    const opacity = minOpacity + (1 - minOpacity) * eased
 
-            ofrecemosVisible.value = true
-            ofrecemosObserver?.disconnect()
-            ofrecemosObserver = undefined
-        },
-        {
-            threshold: 0.2,
-            rootMargin: '0px 0px -35% 0px'
-        }
-    )
+    section.style.setProperty('--ofrecemos-opacity', `${opacity}`)
+    section.style.setProperty('--ofrecemos-left-x', `${-36 * (1 - eased)}px`)
+    section.style.setProperty('--ofrecemos-right-x', `${36 * (1 - eased)}px`)
+}
 
-    if (ofrecemosRef.value) {
-        ofrecemosObserver.observe(ofrecemosRef.value)
-    }
+const scheduleScrollFx = () => {
+    if (rafId != null) return
+    rafId = window.requestAnimationFrame(updateScrollFx)
+}
+
+onMounted(() => {
+    if (typeof window === 'undefined') return
+    updateScrollFx()
+    window.addEventListener('scroll', scheduleScrollFx, { passive: true })
+    window.addEventListener('resize', scheduleScrollFx)
 })
 
 onBeforeUnmount(() => {
-    ofrecemosObserver?.disconnect()
-    ofrecemosObserver = undefined
+    if (typeof window === 'undefined') return
+    window.removeEventListener('scroll', scheduleScrollFx)
+    window.removeEventListener('resize', scheduleScrollFx)
+    if (rafId != null) {
+        window.cancelAnimationFrame(rafId)
+        rafId = undefined
+    }
 })
 </script>
 
@@ -72,7 +102,7 @@ onBeforeUnmount(() => {
         </div>
     </div>
 
-    <div ref="ofrecemosRef" class="ofrecemos" :class="{ 'ofrecemos--visible': ofrecemosVisible }">
+    <div ref="ofrecemosRef" class="ofrecemos">
         <div class="col1">
             <h2>¿Qué te ofrecemos?</h2>
             <h6>
@@ -155,6 +185,8 @@ onBeforeUnmount(() => {
 .servicesHero {
     position: relative;
 
+    overflow-x: hidden;
+
     height: 197px;
     background-image:
         linear-gradient(90deg, rgba(9, 22, 41, 0.75) 0%, rgba(9, 22, 41, 0.2) 55%, rgba(9, 22, 41, 0) 100%),
@@ -179,8 +211,11 @@ onBeforeUnmount(() => {
     font-size: var(--fs-h1);
     font-weight: 600;
     letter-spacing: 0.2px;
-    display: inline-flex;
+    display: flex;
     align-items: center;
+    flex-wrap: wrap;
+    max-width: 100%;
+    min-width: 0;
     gap: 12px;
 }
 
@@ -229,27 +264,24 @@ onBeforeUnmount(() => {
 .ofrecemos {
     display: grid;
     grid-template-columns: 3fr 1fr;
+    --ofrecemos-opacity: 1;
+    --ofrecemos-left-x: 0px;
+    --ofrecemos-right-x: 0px;
 }
 
 .ofrecemos .col1,
 .ofrecemos .col2 {
-    opacity: 0;
-    transition: opacity 620ms ease, transform 620ms ease;
+    opacity: var(--ofrecemos-opacity);
+    transition: opacity 160ms linear, transform 160ms linear;
     will-change: transform, opacity;
 }
 
 .ofrecemos .col1 {
-    transform: translateX(-36px);
+    transform: translateX(var(--ofrecemos-left-x));
 }
 
 .ofrecemos .col2 {
-    transform: translateX(36px);
-}
-
-.ofrecemos--visible .col1,
-.ofrecemos--visible .col2 {
-    opacity: 1;
-    transform: translateX(0);
+    transform: translateX(var(--ofrecemos-right-x));
 }
 
 @media (prefers-reduced-motion: reduce) {

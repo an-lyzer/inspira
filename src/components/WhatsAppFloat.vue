@@ -1,7 +1,7 @@
 <script setup>
 import whatsappLogoUrl from '../assets/images/vecteezy_whatsapp.png'
 
-const whatsappPhone = '51971802607'
+const whatsappPhone = '51991686073'
 const whatsappHref = `https://wa.me/${whatsappPhone}`
 </script>
 
@@ -17,9 +17,10 @@ const whatsappHref = `https://wa.me/${whatsappPhone}`
     position: fixed;
     right: 32px;
     bottom: 32px;
-    width: 74px;
-    height: 74px;
-    border-radius: 30px;
+    width: 84px;
+    height: 84px;
+
+    border-radius: 999px;
     overflow: hidden;
     display: grid;
     place-items: center;
@@ -35,9 +36,12 @@ const whatsappHref = `https://wa.me/${whatsappPhone}`
 }
 
 .whatsappFloatImg {
-    width: 100%;
-    height: 100%;
+    width: 120%;
+    height: 120%;
     object-fit: cover;
+    object-position: 75% 75%;
+    transform: translateY(-6%);
+    border-radius: 999px;
     display: block;
 }
 </style>

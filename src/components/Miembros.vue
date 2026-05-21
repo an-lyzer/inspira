@@ -4,40 +4,86 @@ import karlaImgUrl from '../assets/images/karlafoto.jpeg'
 import percyImgUrl from '../assets/images/prueba 2 tovar.png'
 
 const specialistsRef = ref(null)
-const specialistsVisible = ref(false)
 
-let specialistsObserver
+let rafId
 
-onMounted(() => {
-    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
-        specialistsVisible.value = true
+const clamp01 = (value) => Math.min(1, Math.max(0, value))
+
+const smoothstep = (t) => {
+    const x = clamp01(t)
+    return x * x * (3 - 2 * x)
+}
+
+const revealProgressForTop = (el, startVh = 0.92, endVh = 0.35) => {
+    if (!el) return 1
+    const rect = el.getBoundingClientRect()
+    const vh = window.innerHeight || 1
+    const startPx = vh * startVh
+    const endPx = vh * endVh
+    const raw = (startPx - rect.top) / (startPx - endPx)
+    return clamp01(raw)
+}
+
+const updateScrollFx = () => {
+    rafId = undefined
+    if (typeof window === 'undefined') return
+
+    const section = specialistsRef.value
+    if (!section) return
+
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches
+    const headerEl = section.querySelector('.specialistsHeader')
+    const cards = section.querySelectorAll('.specialist')
+
+    if (reduceMotion) {
+        headerEl?.style.setProperty('--specialists-header-opacity', '1')
+        headerEl?.style.setProperty('--specialists-header-y', '0px')
+
+        cards.forEach((cardEl) => {
+            cardEl.style.setProperty('--specialist-opacity', '1')
+            cardEl.style.setProperty('--specialist-x', '0px')
+        })
         return
     }
 
-    specialistsObserver = new IntersectionObserver(
-        (entries) => {
-            const entry = entries[0]
-            if (!entry?.isIntersecting) return
-            if (entry.intersectionRatio < 0.2) return
+    const eased = smoothstep(revealProgressForTop(section, 1.15, 0.45))
+    const minOpacity = 0.35
+    const opacity = minOpacity + (1 - minOpacity) * eased
 
-            specialistsVisible.value = true
-            specialistsObserver?.disconnect()
-            specialistsObserver = undefined
-        },
-        {
-            threshold: 0.2,
-            rootMargin: '0px 0px -35% 0px'
-        }
-    )
-
-    if (specialistsRef.value) {
-        specialistsObserver.observe(specialistsRef.value)
+    if (headerEl) {
+        const headerY = -18 + 18 * eased
+        headerEl.style.setProperty('--specialists-header-opacity', `${opacity}`)
+        headerEl.style.setProperty('--specialists-header-y', `${headerY}px`)
     }
+
+    cards.forEach((cardEl, index) => {
+        const baseX = index % 2 === 1 ? 36 : -36
+        const x = baseX * (1 - eased)
+        cardEl.style.setProperty('--specialist-opacity', `${opacity}`)
+        cardEl.style.setProperty('--specialist-x', `${x}px`)
+    })
+}
+
+const scheduleScrollFx = () => {
+    if (rafId != null) return
+    rafId = window.requestAnimationFrame(updateScrollFx)
+}
+
+onMounted(() => {
+    if (typeof window === 'undefined') return
+    updateScrollFx()
+    window.addEventListener('scroll', scheduleScrollFx, { passive: true })
+    window.addEventListener('resize', scheduleScrollFx)
 })
 
 onBeforeUnmount(() => {
-    specialistsObserver?.disconnect()
-    specialistsObserver = undefined
+    if (typeof window === 'undefined') return
+    window.removeEventListener('scroll', scheduleScrollFx)
+    window.removeEventListener('resize', scheduleScrollFx)
+    if (rafId != null) {
+        window.cancelAnimationFrame(rafId)
+        rafId = undefined
+    }
 })
 </script>
 
@@ -45,8 +91,7 @@ onBeforeUnmount(() => {
 
 
     <main class="miembros">
-        <section ref="specialistsRef" class="specialists" :class="{ 'specialists--visible': specialistsVisible }"
-            aria-label="Nuestros especialistas">
+        <section ref="specialistsRef" class="specialists" aria-label="Nuestros especialistas">
             <header class="specialistsHeader">
                 <h2 class="specialistsTitle">Nuestros Especialistas</h2>
                 <span class="specialistsUnderline" aria-hidden="true"></span>
@@ -72,11 +117,13 @@ onBeforeUnmount(() => {
 
                     <div class="specialistInfo">
                         <h6 class="specialistRole">
-                           Ejecutiva Senior en Estrategia <br> y Finanzas Corporativas
+                            Ejecutiva Senior en Estrategia <br> y Finanzas Corporativas
                         </h6>
                         <h5 class="specialistName">Karla Chumpitaz</h5>
                         <h6 class="specialistBio">
-                          Administradora de Empresas por USIL, con Maestría Ejecutiva por INCAE Business School y Directora Independiente por ESADE. Más de 18 años liderando finanzas corporativas, estrategia, gobierno corporativo y transformación empresarial.
+                            Administradora de Empresas con maestría, con Maestría Ejecutiva por INCAE Business School y
+                            Directora Independiente por ESADE. Más de 18 años liderando finanzas corporativas,
+                            estrategia, gobierno corporativo y transformación empresarial.
                         </h6>
                     </div>
                 </article>
@@ -100,11 +147,13 @@ onBeforeUnmount(() => {
 
                     <div class="specialistInfo">
                         <h6 class="specialistRole">
-                            Ejecutivo Senior en Finanzas, <br>Contabilidad y tributación 
+                            Ejecutivo Senior en Finanzas, <br>Contabilidad y tributación
                         </h6>
                         <h5 class="specialistName">Percy Tovar</h5>
                         <h6 class="specialistBio">
-                            Contador Público Colegiado, MBA por ESAN y doctorado en Administración de Negocios. Más de 25 años de experiencia en gestión financiera, contable, tributaria, implementación SAP y optimización de procesos corporativos.
+                            Contador Público Colegiado, MBA por ESAN y doctorado en Administración de Negocios. Más de
+                            25 años de experiencia en gestión financiera, contable, tributaria, implementación SAP y
+                            optimización de procesos corporativos.
                         </h6>
                     </div>
                 </article>
@@ -133,14 +182,10 @@ onBeforeUnmount(() => {
     text-align: center;
     padding: 0 5rem;
     margin: 0 auto 56px;
-    opacity: 0;
-    transform: translateY(-18px);
-    transition: opacity 620ms ease, transform 620ms ease;
-}
-
-.specialists--visible .specialistsHeader {
-    opacity: 1;
-    transform: translateY(0);
+    opacity: var(--specialists-header-opacity, 1);
+    transform: translateY(var(--specialists-header-y, 0px));
+    will-change: transform, opacity;
+    transition: opacity 160ms linear, transform 160ms linear;
 }
 
 .specialistsTitle {
@@ -180,20 +225,10 @@ onBeforeUnmount(() => {
     width: 100%;
     max-width: calc(288px + 40px + 28rem);
 
-    opacity: 0;
-    --member-x: -36px;
-    transform: translateX(var(--member-x));
-    transition: opacity 620ms ease, transform 620ms ease;
+    opacity: var(--specialist-opacity, 1);
+    transform: translateX(var(--specialist-x, 0px));
+    transition: opacity 160ms linear, transform 160ms linear;
     will-change: transform, opacity;
-}
-
-.specialistsGrid .specialist:nth-child(even) {
-    --member-x: 36px;
-}
-
-.specialists--visible .specialist {
-    opacity: 1;
-    transform: translateX(0);
 }
 
 @media (prefers-reduced-motion: reduce) {

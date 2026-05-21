@@ -12,68 +12,101 @@ import Miembros from './Miembros.vue'
 import imagen2k from '../assets/images/home/imageninicial2k.png'
 import nueva2k from '../assets/images/home/nueva-imagen2k.jpg'
 
+const heroRef = ref(null)
 const servicesRef = ref(null)
-const servicesVisible = ref(false)
-
 const reviewsRef = ref(null)
-const reviewsVisible = ref(false)
 
-let servicesObserver
-let reviewsObserver
+let rafId
 
-onMounted(() => {
-    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
-        servicesVisible.value = true
-        reviewsVisible.value = true
+const clamp01 = (value) => Math.min(1, Math.max(0, value))
+
+const smoothstep = (t) => {
+    const x = clamp01(t)
+    return x * x * (3 - 2 * x)
+}
+
+const revealProgressForTop = (el, startVh = 0.92, endVh = 0.35) => {
+    if (!el) return 1
+    const rect = el.getBoundingClientRect()
+    const vh = window.innerHeight || 1
+    const startPx = vh * startVh
+    const endPx = vh * endVh
+    const raw = (startPx - rect.top) / (startPx - endPx)
+    return clamp01(raw)
+}
+
+const applyRevealVars = (el, progress, { titleFromY, cardsFromY, titleMinOpacity }) => {
+    const eased = smoothstep(progress)
+    const titleOpacity = titleMinOpacity + (1 - titleMinOpacity) * eased
+    const cardsOpacity = titleMinOpacity + (1 - titleMinOpacity) * eased
+
+    const titleY = titleFromY + (-titleFromY) * eased
+    const cardsY = cardsFromY + (-cardsFromY) * eased
+
+    el.style.setProperty('--reveal-title-opacity', `${titleOpacity}`)
+    el.style.setProperty('--reveal-title-y', `${titleY}px`)
+    el.style.setProperty('--reveal-cards-opacity', `${cardsOpacity}`)
+    el.style.setProperty('--reveal-cards-y', `${cardsY}px`)
+}
+
+const updateScrollFx = () => {
+    rafId = undefined
+    if (typeof window === 'undefined') return
+
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches
+    if (reduceMotion) {
+        heroRef.value?.style.removeProperty('--hero-parallax')
+        servicesRef.value?.style.removeProperty('--services-parallax')
+
+        if (servicesRef.value) applyRevealVars(servicesRef.value, 1, { titleFromY: 0, cardsFromY: 0, titleMinOpacity: 1 })
+        if (reviewsRef.value) applyRevealVars(reviewsRef.value, 1, { titleFromY: 0, cardsFromY: 0, titleMinOpacity: 1 })
         return
     }
 
-    servicesObserver = new IntersectionObserver(
-        (entries) => {
-            const entry = entries[0]
-            if (!entry?.isIntersecting) return
-            if (entry.intersectionRatio < 0.2) return
-            servicesVisible.value = true
-            servicesObserver?.disconnect()
-            servicesObserver = undefined
-        },
-        {
-            threshold: 0.2,
-            rootMargin: '0px 0px -35% 0px'
-        }
-    )
-
-    if (servicesRef.value) {
-        servicesObserver.observe(servicesRef.value)
+    const heroEl = heroRef.value
+    if (heroEl) {
+        const rect = heroEl.getBoundingClientRect()
+        const offset = Math.max(-200, Math.min(200, -rect.top * 0.25))
+        heroEl.style.setProperty('--hero-parallax', `${offset}px`)
     }
 
-    reviewsObserver = new IntersectionObserver(
-        (entries) => {
-            const entry = entries[0]
-            if (!entry?.isIntersecting) return
-            if (entry.intersectionRatio < 0.2) return
+    const servicesEl = servicesRef.value
+    if (servicesEl) {
+        const rect = servicesEl.getBoundingClientRect()
+        const offset = Math.max(-180, Math.min(180, -rect.top * 0.18))
+        servicesEl.style.setProperty('--services-parallax', `${offset}px`)
 
-            reviewsVisible.value = true
-            reviewsObserver?.disconnect()
-            reviewsObserver = undefined
-        },
-        {
-            threshold: 0.2,
-            rootMargin: '0px 0px -35% 0px'
-        }
-    )
-
-    if (reviewsRef.value) {
-        reviewsObserver.observe(reviewsRef.value)
+        const p = revealProgressForTop(servicesEl)
+        applyRevealVars(servicesEl, p, { titleFromY: -18, cardsFromY: 32, titleMinOpacity: 0.18 })
     }
+
+    const reviewsEl = reviewsRef.value
+    if (reviewsEl) {
+        const p = revealProgressForTop(reviewsEl)
+        applyRevealVars(reviewsEl, p, { titleFromY: -18, cardsFromY: 32, titleMinOpacity: 0.18 })
+    }
+}
+
+const scheduleScrollFx = () => {
+    if (rafId != null) return
+    rafId = window.requestAnimationFrame(updateScrollFx)
+}
+
+onMounted(() => {
+    if (typeof window === 'undefined') return
+    updateScrollFx()
+    window.addEventListener('scroll', scheduleScrollFx, { passive: true })
+    window.addEventListener('resize', scheduleScrollFx)
 })
 
 onBeforeUnmount(() => {
-    servicesObserver?.disconnect()
-    servicesObserver = undefined
-
-    reviewsObserver?.disconnect()
-    reviewsObserver = undefined
+    if (typeof window === 'undefined') return
+    window.removeEventListener('scroll', scheduleScrollFx)
+    window.removeEventListener('resize', scheduleScrollFx)
+    if (rafId != null) {
+        window.cancelAnimationFrame(rafId)
+        rafId = undefined
+    }
 })
 const reviews = [
     {
@@ -85,7 +118,7 @@ const reviews = [
     {
         title: 'Transformación',
         text: 'Gracias a la consultoría, logramos optimizar nuestros costos operativos en un 15% durante el primer semestre.',
-        name: 'Roberto Sanchez',
+        name: 'Roberto Gomez',
         role: 'CEO at ABC Corporation'
     },
     {
@@ -96,21 +129,19 @@ const reviews = [
     }
 ]
 
-const scrollToServices = () => {
-    document.getElementById('servicios')?.scrollIntoView({ behavior: 'smooth' })
-}
 </script>
 
 <template>
     <Header />
     <main class="home">
-        <section class="hero" :style="{ '--hero-image': `url(${nueva2k})` }">
+        <section ref="heroRef" class="hero" :style="{ '--hero-image': `url(${nueva2k})` }">
             <div class="heroContent">
                 <!-- <h1>
                     Asesoría financiera y patrimonial para toma de decisiones que definen el futuro de tu empresa
                 </h1> -->
-                 <h1>
-                    Asesoría financiera y patrimonial para decisiones que protegen el futuro de tu empresa y tu legado familiar
+                <h1>
+                    Asesoría financiera y patrimonial para decisiones que protegen el futuro de tu empresa y tu legado
+                    familiar
                 </h1>
                 <!-- <h1>
                    Construimos valor a través de estrategia financiera y visión corporativa
@@ -120,15 +151,9 @@ const scrollToServices = () => {
                     decisiones clave con una mirada integral y de largo plazo.
                 </h5>
             </div>
-
-            <button class="heroScroll" type="button" aria-label="Bajar" @click="scrollToServices">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-                    <path fill="currentColor" d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z" />
-                </svg>
-            </button>
         </section>
 
-        <section id="servicios" ref="servicesRef" class="services" :class="{ 'services--visible': servicesVisible }"
+        <section id="servicios" ref="servicesRef" class="services"
             :style="{ '--services-image': `url(${servicesBgUrl})` }">
             <div class="servicesInner">
                 <div class="servicesTitle">
@@ -148,6 +173,16 @@ const scrollToServices = () => {
                         <p>
                             Planeamiento, control de gestión, presupuestos y análisis financiero.
                         </p>
+                        <RouterLink class="serviceCta" :to="{ name: 'Asesoriafinanciera' }"
+                            aria-label="Ver Asesoría Financiera">
+                            <svg width="38" height="39" viewBox="0 0 38 39" fill="none"
+                                xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <ellipse cx="18.7041" cy="19.5" rx="19.5" ry="18.7041"
+                                    transform="rotate(-90 18.7041 19.5)" fill="var(--color-amarillo)" />
+                                <path d="M15.025 30L13.25 28.225L21.475 20L13.25 11.775L15.025 10L25.025 20L15.025 30Z"
+                                    fill="var(--color-blanco)" />
+                            </svg>
+                        </RouterLink>
                     </article>
 
                     <article class="serviceCard">
@@ -164,8 +199,19 @@ const scrollToServices = () => {
                         </div>
                         <h4>Estructuración<br />Patrimonial</h4>
                         <p>
-                             Asesoría en portafolios de inversión. Protección y ordenamiento del patrimonio familiar y empresarial.
+                            Asesoría en portafolios de inversión. Protección y ordenamiento del patrimonio familiar y
+                            empresarial.
                         </p>
+                        <RouterLink class="serviceCta" :to="{ name: 'estructuracionPatrimonial' }"
+                            aria-label="Ver Estructuración Patrimonial">
+                            <svg width="38" height="39" viewBox="0 0 38 39" fill="none"
+                                xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <ellipse cx="18.7041" cy="19.5" rx="19.5" ry="18.7041"
+                                    transform="rotate(-90 18.7041 19.5)" fill="var(--color-amarillo)" />
+                                <path d="M15.025 30L13.25 28.225L21.475 20L13.25 11.775L15.025 10L25.025 20L15.025 30Z"
+                                    fill="var(--color-blanco)" />
+                            </svg>
+                        </RouterLink>
                     </article>
 
                     <article class="serviceCard">
@@ -190,6 +236,16 @@ const scrollToServices = () => {
                         <p>
                             Fortalecimiento institucional, directorios y protocolos familiares.
                         </p>
+                        <RouterLink class="serviceCta" :to="{ name: 'gobiernoCorporativo' }"
+                            aria-label="Ver Gobierno Corporativo">
+                            <svg width="38" height="39" viewBox="0 0 38 39" fill="none"
+                                xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <ellipse cx="18.7041" cy="19.5" rx="19.5" ry="18.7041"
+                                    transform="rotate(-90 18.7041 19.5)" fill="var(--color-amarillo)" />
+                                <path d="M15.025 30L13.25 28.225L21.475 20L13.25 11.775L15.025 10L25.025 20L15.025 30Z"
+                                    fill="var(--color-blanco)" />
+                            </svg>
+                        </RouterLink>
                     </article>
 
                     <article class="serviceCard">
@@ -207,12 +263,22 @@ const scrollToServices = () => {
                         <p>
                             Implementación de ERP's, optimización de procesos, back office y herramientas de gestión.
                         </p>
+                        <RouterLink class="serviceCta" :to="{ name: 'transformacionOperacional' }"
+                            aria-label="Ver Transformación Operacional">
+                            <svg width="38" height="39" viewBox="0 0 38 39" fill="none"
+                                xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <ellipse cx="18.7041" cy="19.5" rx="19.5" ry="18.7041"
+                                    transform="rotate(-90 18.7041 19.5)" fill="var(--color-amarillo)" />
+                                <path d="M15.025 30L13.25 28.225L21.475 20L13.25 11.775L15.025 10L25.025 20L15.025 30Z"
+                                    fill="var(--color-blanco)" />
+                            </svg>
+                        </RouterLink>
                     </article>
                 </div>
             </div>
         </section>
 
-        <section ref="reviewsRef" class="reviews" :class="{ 'reviews--visible': reviewsVisible }">
+        <section ref="reviewsRef" class="reviews">
             <div class="reviewsInner">
                 <div class="reviewsTitle">
                     <h2>¿Por que eligen inspira?</h2>
@@ -255,23 +321,33 @@ h5 {
 .hero {
     position: relative;
     min-height: calc(100vh - 80px);
-    background-image:
-        linear-gradient(0deg,
-            rgba(9, 22, 41, 0.6) 0%,
-            rgba(9, 22, 41, 0.3) 0%,
-            rgba(9, 22, 41, 0) 60%),
-        var(--hero-image);
+    background-image: var(--hero-image);
     background-size: cover;
-    background-position: center 30%;
+    background-repeat: no-repeat;
+    background-position: center calc(18% + var(--hero-parallax, 0px));
+    will-change: background-position;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: linear-gradient(0deg,
+            rgba(9, 22, 41, 0.62) 0%,
+            rgba(9, 22, 41, 0.38) 28%,
+            rgba(9, 22, 41, 0) 65%);
 }
 
 .heroContent {
     position: absolute;
     left: 80px;
     right: 80px;
-    bottom: 80px;
+    bottom: 34px;
     max-width: 820px;
     color: var(--color-blanco);
+    z-index: 1;
 }
 
 .heroContent h1 {
@@ -289,47 +365,27 @@ h5 {
     color: rgba(249, 249, 249, 0.92);
 }
 
-.heroScroll {
-    position: absolute;
-    left: 50%;
-    bottom: 22px;
-    transform: translateX(-50%);
-    width: 56px;
-    height: 56px;
-    border-radius: 999px;
-    border: none;
-    background: var(--color-azul);
-    color: var(--color-blanco);
-    display: grid;
-    place-items: center;
-    cursor: pointer;
-}
-
-.heroScroll svg {
-    width: 28px;
-    height: 28px;
-}
-
-.heroScroll:hover {
-    filter: brightness(1.05);
-}
-
 @media (max-width: 820px) {
     .heroContent {
         left: 24px;
         right: 24px;
-        bottom: 76px;
+        bottom: 44px;
     }
 }
 
 .services {
     position: relative;
     padding: 84px 0 96px;
+    --reveal-title-opacity: 1;
+    --reveal-title-y: 0px;
+    --reveal-cards-opacity: 1;
+    --reveal-cards-y: 0px;
     background-image:
         linear-gradient(0deg, rgba(9, 22, 41, 0.82) 0%, rgba(9, 22, 41, 0.82) 100%),
         var(--services-image);
     background-size: cover;
-    background-position: center;
+    background-position: center calc(50% + var(--services-parallax, 0px));
+    will-change: background-position;
 }
 
 .servicesInner {
@@ -341,14 +397,9 @@ h5 {
     text-align: center;
     color: var(--color-blanco);
     margin-bottom: 48px;
-    opacity: 0;
-    transform: translateY(-18px);
-    transition: opacity 520ms ease, transform 520ms ease;
-}
-
-.services--visible .servicesTitle {
-    opacity: 1;
-    transform: translateY(0);
+    opacity: var(--reveal-title-opacity);
+    transform: translateY(var(--reveal-title-y));
+    transition: opacity 160ms linear, transform 160ms linear;
 }
 
 .servicesTitle h2 {
@@ -379,23 +430,18 @@ h5 {
     flex-direction: column;
     align-items: center;
     height: 100%;
-    opacity: 0;
-    --card-translate-y: 32px;
+    opacity: var(--reveal-cards-opacity);
+    --card-translate-y: var(--reveal-cards-y);
     --card-scale: 1;
     transform: translateY(var(--card-translate-y)) scale(var(--card-scale));
     transform-origin: center;
     will-change: transform, opacity;
-    transition: opacity 620ms ease, transform 620ms ease;
+    transition: opacity 160ms linear, transform 160ms linear;
 }
 
 .serviceCard:hover,
 .serviceCard:focus-within {
     --card-scale: 1.05;
-}
-
-.services--visible .serviceCard {
-    opacity: 1;
-    --card-translate-y: 0px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -444,6 +490,34 @@ h5 {
     padding: 0 6px;
 }
 
+.serviceCta {
+    margin-top: auto;
+    padding-top: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transform: translateY(0);
+    transition: transform 160ms ease, filter 160ms ease;
+}
+
+.serviceCta svg {
+    width: 38px;
+    height: 39px;
+    display: block;
+}
+
+.serviceCta:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.02);
+}
+
+.serviceCta:focus-visible {
+    outline: 2px solid var(--color-amarillo);
+    outline-offset: 4px;
+    border-radius: 999px;
+}
+
 @media (max-width: 1024px) {
     .servicesInner {
         padding: 0 24px;
@@ -463,6 +537,10 @@ h5 {
 .reviews {
     background: var(--color-azul);
     padding: 80px 0;
+    --reveal-title-opacity: 1;
+    --reveal-title-y: 0px;
+    --reveal-cards-opacity: 1;
+    --reveal-cards-y: 0px;
 }
 
 .reviewsInner {
@@ -474,14 +552,9 @@ h5 {
     text-align: center;
     color: var(--color-blanco);
     margin-bottom: 56px;
-    opacity: 0;
-    transform: translateY(-18px);
-    transition: opacity 620ms ease, transform 620ms ease;
-}
-
-.reviews--visible .reviewsTitle {
-    opacity: 1;
-    transform: translateY(0);
+    opacity: var(--reveal-title-opacity);
+    transform: translateY(var(--reveal-title-y));
+    transition: opacity 160ms linear, transform 160ms linear;
 }
 
 .reviewsTitle h2 {
@@ -506,14 +579,9 @@ h5 {
     display: grid;
     justify-items: center;
     text-align: center;
-    opacity: 0;
-    transform: translateY(32px);
-    transition: opacity 620ms ease, transform 620ms ease;
-}
-
-.reviews--visible .review {
-    opacity: 1;
-    transform: translateY(0);
+    opacity: var(--reveal-cards-opacity);
+    transform: translateY(var(--reveal-cards-y));
+    transition: opacity 160ms linear, transform 160ms linear;
 }
 
 .reviewBubble {

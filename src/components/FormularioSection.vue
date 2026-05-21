@@ -3,7 +3,6 @@ import { onBeforeUnmount, onMounted, ref } from 'vue'
 import bgUrl from '../assets/images/imagenplaneacion.jpg'
 
 const formRef = ref(null)
-const formVisible = ref(false)
 
 const form = ref({
     nombre: '',
@@ -61,44 +60,81 @@ async function handleSubmit() {
     }
 }
 
-let formObserver
 
-onMounted(() => {
-    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
-        formVisible.value = true
+let rafId
+
+const clamp01 = (value) => Math.min(1, Math.max(0, value))
+
+const smoothstep = (t) => {
+    const x = clamp01(t)
+    return x * x * (3 - 2 * x)
+}
+
+const revealProgressForTop = (el, startVh = 0.92, endVh = 0.35) => {
+    if (!el) return 1
+    const rect = el.getBoundingClientRect()
+    const vh = window.innerHeight || 1
+    const startPx = vh * startVh
+    const endPx = vh * endVh
+    const raw = (startPx - rect.top) / (startPx - endPx)
+    return clamp01(raw)
+}
+
+const updateScrollFx = () => {
+    rafId = undefined
+    if (typeof window === 'undefined') return
+
+    const section = formRef.value
+    if (!section) return
+
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches
+    if (reduceMotion) {
+        section.style.setProperty('--form-left-opacity', '1')
+        section.style.setProperty('--form-left-x', '0px')
+        section.style.setProperty('--form-card-opacity', '1')
+        section.style.setProperty('--form-card-x', '0px')
         return
     }
 
-    formObserver = new IntersectionObserver(
-        (entries) => {
-            const entry = entries[0]
-            if (!entry?.isIntersecting) return
-            if (entry.intersectionRatio < 0.2) return
+    const eased = smoothstep(revealProgressForTop(section, 1.15, 0.45))
+    const minOpacity = 0.35
+    const opacity = minOpacity + (1 - minOpacity) * eased
 
-            formVisible.value = true
-            formObserver?.disconnect()
-            formObserver = undefined
-        },
-        {
-            threshold: 0.2,
-            rootMargin: '0px 0px -35% 0px'
-        }
-    )
+    const leftX = -36 * (1 - eased)
+    const cardX = 36 * (1 - eased)
 
-    if (formRef.value) {
-        formObserver.observe(formRef.value)
-    }
+    section.style.setProperty('--form-left-opacity', `${opacity}`)
+    section.style.setProperty('--form-left-x', `${leftX}px`)
+    section.style.setProperty('--form-card-opacity', `${opacity}`)
+    section.style.setProperty('--form-card-x', `${cardX}px`)
+}
+
+const scheduleScrollFx = () => {
+    if (rafId != null) return
+    rafId = window.requestAnimationFrame(updateScrollFx)
+}
+
+onMounted(() => {
+    if (typeof window === 'undefined') return
+    updateScrollFx()
+    window.addEventListener('scroll', scheduleScrollFx, { passive: true })
+    window.addEventListener('resize', scheduleScrollFx)
 })
 
 onBeforeUnmount(() => {
-    formObserver?.disconnect()
-    formObserver = undefined
+    if (typeof window === 'undefined') return
+    window.removeEventListener('scroll', scheduleScrollFx)
+    window.removeEventListener('resize', scheduleScrollFx)
+    if (rafId != null) {
+        window.cancelAnimationFrame(rafId)
+        rafId = undefined
+    }
 })
 </script>
 
 <template>
-    <section ref="formRef" class="formSection" :class="{ 'formSection--visible': formVisible }"
-        :style="{ '--form-bg': `url(${bgUrl})` }" aria-label="Formulario de contacto">
+    <section ref="formRef" class="formSection" :style="{ '--form-bg': `url(${bgUrl})` }"
+        aria-label="Formulario de contacto">
         <div class="formSectionInner">
             <div class="formLeft">
                 <div class="formIcon" aria-hidden="true">
@@ -149,7 +185,7 @@ onBeforeUnmount(() => {
 
                         <label class="field">
                             <span class="label">Teléfono *</span>
-                            <input class="input" type="tel" name="telefono" placeholder="Teléfono" required
+                            <input class="input" type="tel" name="telefono" placeholder="(+51) *** *** ***" required
                                 v-model.trim="form.telefono" autocomplete="tel" />
                         </label>
 
@@ -187,6 +223,10 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .formSection {
+    --form-left-opacity: 1;
+    --form-left-x: 0px;
+    --form-card-opacity: 1;
+    --form-card-x: 0px;
     background-image:
         linear-gradient(0deg, rgba(9, 22, 41, 0.78), rgba(9, 22, 41, 0.78)),
         var(--form-bg);
@@ -208,23 +248,17 @@ onBeforeUnmount(() => {
 
 .formLeft {
     max-width: 540px;
-    opacity: 0;
-    transform: translateX(-36px);
-    transition: opacity 620ms ease, transform 620ms ease;
+    opacity: var(--form-left-opacity);
+    transform: translateX(var(--form-left-x));
+    transition: opacity 160ms linear, transform 160ms linear;
     will-change: transform, opacity;
 }
 
 .formCard {
-    opacity: 0;
-    transform: translateX(36px);
-    transition: opacity 620ms ease, transform 620ms ease;
+    opacity: var(--form-card-opacity);
+    transform: translateX(var(--form-card-x));
+    transition: opacity 160ms linear, transform 160ms linear;
     will-change: transform, opacity;
-}
-
-.formSection--visible .formLeft,
-.formSection--visible .formCard {
-    opacity: 1;
-    transform: translateX(0);
 }
 
 .formIcon {
@@ -333,7 +367,7 @@ onBeforeUnmount(() => {
     background-position: right 14px center;
     background-size: 16px;
     padding-right: 40px;
-    
+
     background-color: var(--color-plomo);
     color: var(--color-azul);
 }
