@@ -2,7 +2,7 @@
 import Header from './header.vue'
 import Footer from './footer.vue'
 import heroBgUrl from '../assets/images/apretonmanos.jpg'
-import logoUrl from '../assets/images/logo.jpeg'
+import logoUrl from '../assets/images/logopng.png'
 import FormularioSection from './FormularioSection.vue'
 </script>
 
@@ -23,8 +23,8 @@ import FormularioSection from './FormularioSection.vue'
                 <div class="contactLeft">
                     <h2 class="contactHeading">Whatsapp</h2>
                     <div class="contactList">
-                        <a class="contactItem" href="tel:+51938948349">(+51) 991 686 073</a>
-                        <a class="contactItem" href="tel:+51938948349">(+51) 938 948 349</a>
+                        <span class="contactItem">(+51) 991 686 073</span>
+                        <!-- <span class="contactItem">(+51) 938 948 349</span> -->
                     </div>
 
                     <a class="contactEmail" href="mailto:inspira@gmail.com">karla.chumpitaz@inspirafinancial.pe</a>
@@ -154,6 +154,8 @@ import FormularioSection from './FormularioSection.vue'
     font-size: var(--fs-h3);
     font-weight: 600;
     color: inherit;
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 .contactAddress {
@@ -245,13 +247,17 @@ import FormularioSection from './FormularioSection.vue'
 
 @media (max-width: 820px) {
     .contactHero {
-        height: 260px;
+        height: 150px;
+        background-image:
+            linear-gradient(90deg, rgba(9, 22, 41, 0.85) 0%, rgba(9, 22, 41, 0.5) 55%, rgba(9, 22, 41, 0.18) 100%),
+            var(--contact-hero-image);
     }
 
     .contactHeroInner {
+        align-items: flex-end;
         padding-left: 24px;
         padding-right: 24px;
-        padding-bottom: 28px;
+        padding-bottom: 20px;
     }
 
     .contactHeroTitle {
@@ -266,7 +272,7 @@ import FormularioSection from './FormularioSection.vue'
         padding-left: 24px;
         padding-right: 24px;
         grid-template-columns: 1fr;
-        gap: 28px;
+        gap: 22px;
     }
 
     .contactItem,
@@ -274,14 +280,64 @@ import FormularioSection from './FormularioSection.vue'
         font-size: var(--fs-h5);
     }
 
+    .contactEmail {
+        margin-top: 28px;
+    }
+
+    .contactHeading {
+        margin-bottom: 18px;
+        font-size: var(--fs-h4, 1.35rem);
+    }
+
+    .contactAddress {
+        font-size: var(--fs-p);
+        line-height: 1.65;
+    }
+
     .contactCardContent {
-        padding: 28px 24px;
+        padding: 24px 20px;
     }
 
     .cardLogo {
         width: 200px;
         right: 18px;
         bottom: 18px;
+    }
+
+    .contactCard {
+        min-height: auto;
+    }
+}
+
+@media (max-width: 560px) {
+    .contactHero {
+        height: 130px;
+    }
+
+    .contactHeroInner {
+        padding-left: 16px;
+        padding-right: 16px;
+        padding-bottom: 16px;
+    }
+
+    .contactHeroTitle {
+        font-size: var(--fs-h3, 1.65rem);
+        gap: 10px;
+    }
+
+    .contactContainer {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .contactCardContent {
+        padding: 22px 16px;
+    }
+
+    .cardLogo {
+        width: 180px;
+        right: 14px;
+        bottom: 14px;
     }
 }
 </style>

@@ -7,7 +7,8 @@
 	--color-amarillo: #edbb58;
 	--color-plomo: #ebebeb;
 	--color-plomoazul: #6b7d99;
-
+	--color-azulclaro1:#1c447e;
+	--color-azulclaro2:#2e71d3;
 	/* Fonts */
 	--font-body: 'Open Sans', system-ui, -apple-system, 'Segoe UI', Roboto, Arial,
 		sans-serif;
@@ -94,5 +95,13 @@ a {
 
 button {
 	font: inherit;
+}
+
+img,
+svg,
+video,
+canvas {
+	max-width: 100%;
+	height: auto;
 }
 

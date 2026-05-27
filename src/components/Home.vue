@@ -2,15 +2,11 @@
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import Header from './header.vue'
 import Footer from './footer.vue'
-import heroImgUrl from '../assets/images/img1home.png'
-import asesoria1 from '../assets/images/asesoria1.jpg'
-import fotoperfil from '../assets/images/fotoperfil1.jpg'
 import servicesBgUrl from '../assets/images/imagenplaneacion.jpg'
-import avatarPlaceholderUrl from '../assets/images/logo.jpeg'
 import FormularioSection from './FormularioSection.vue'
 import Miembros from './Miembros.vue'
-import imagen2k from '../assets/images/home/imageninicial2k.png'
 import nueva2k from '../assets/images/home/nueva-imagen2k.jpg'
+import heroMobileUrl from '../assets/images/imagephone.jpg'
 
 const heroRef = ref(null)
 const servicesRef = ref(null)
@@ -49,6 +45,19 @@ const applyRevealVars = (el, progress, { titleFromY, cardsFromY, titleMinOpacity
     el.style.setProperty('--reveal-cards-y', `${cardsY}px`)
 }
 
+const syncReviewBubbleStart = (reviewsEl) => {
+    if (!reviewsEl) return
+    const grid = reviewsEl.querySelector('.reviewsGrid')
+    const firstBubble = reviewsEl.querySelector('.reviewsGrid .review:nth-child(1) .reviewBubble')
+    const firstTitle = reviewsEl.querySelector('.reviewsGrid .review:nth-child(1) .reviewBubbleTitle')
+    if (!grid || !firstBubble || !firstTitle) return
+
+    const bubbleRect = firstBubble.getBoundingClientRect()
+    const titleRect = firstTitle.getBoundingClientRect()
+    const start = Math.max(0, titleRect.top - bubbleRect.top)
+    grid.style.setProperty('--review-content-start', `${Math.round(start)}px`)
+}
+
 const updateScrollFx = () => {
     rafId = undefined
     if (typeof window === 'undefined') return
@@ -84,6 +93,7 @@ const updateScrollFx = () => {
     if (reviewsEl) {
         const p = revealProgressForTop(reviewsEl)
         applyRevealVars(reviewsEl, p, { titleFromY: -18, cardsFromY: 32, titleMinOpacity: 0.18 })
+        syncReviewBubbleStart(reviewsEl)
     }
 }
 
@@ -110,16 +120,16 @@ onBeforeUnmount(() => {
 })
 const reviews = [
     {
-        title: 'Eficiencia',
-        text: 'Gracias a la consultoría, logramos optimizar nuestros costos operativos en un 15% durante el primer semestre.',
-        name: 'Cecilia Carbajal',
-        role: 'CEO at ABC Corporation'
+        title: 'Orden y control',
+        text: '"Inspira nos ayudó a ordenar financieramente a la compañía y transformar la información en decisiones estratégicas. Hoy contamos con mayor visibilidad, control y una estructura preparada para crecer."',
+        name: 'Iván Rojas',
+        role: 'Gerente General - Interlogic SAC'
     },
     {
-        title: 'Transformación',
-        text: 'Gracias a la consultoría, logramos optimizar nuestros costos operativos en un 15% durante el primer semestre.',
-        name: 'Roberto Gomez',
-        role: 'CEO at ABC Corporation'
+        title: 'Estrategia y visión',
+        text: '"La asesoría de Inspira nos ayudó a ordenar la compañía y fortalecer la toma de decisiones estratégicas. Destaco especialmente su compromiso y nivel profesional"',
+        name: 'Dario Soto Luna',
+        role: 'Presidente Ejecutivo - Gramogen'
     },
     {
         title: 'Calidad y seguridad',
@@ -134,7 +144,8 @@ const reviews = [
 <template>
     <Header />
     <main class="home">
-        <section ref="heroRef" class="hero" :style="{ '--hero-image': `url(${nueva2k})` }">
+        <section ref="heroRef" class="hero"
+            :style="{ '--hero-image': `url(${nueva2k})`, '--hero-image-mobile': `url(${heroMobileUrl})` }">
             <div class="heroContent">
                 <!-- <h1>
                     Asesoría financiera y patrimonial para toma de decisiones que definen el futuro de tu empresa
@@ -293,7 +304,6 @@ const reviews = [
                         </div>
 
                         <div class="reviewPerson">
-                            <img class="reviewAvatar" :src="fotoperfil" alt="" aria-hidden="true" />
                             <div class="reviewPersonText">
                                 <div class="reviewPersonName">{{ review.name }}</div>
                                 <div class="reviewPersonRole">{{ review.role }}</div>
@@ -321,6 +331,7 @@ h5 {
 .hero {
     position: relative;
     min-height: calc(100vh - 80px);
+    min-height: calc(100svh - 80px);
     background-image: var(--hero-image);
     background-size: cover;
     background-repeat: no-repeat;
@@ -336,15 +347,15 @@ h5 {
     pointer-events: none;
     background: linear-gradient(0deg,
             rgba(9, 22, 41, 0.62) 0%,
-            rgba(9, 22, 41, 0.38) 28%,
-            rgba(9, 22, 41, 0) 65%);
+            rgba(9, 22, 41, 0.38) 8%,
+            rgba(9, 22, 41, 0) 55%);
 }
 
 .heroContent {
     position: absolute;
     left: 80px;
     right: 80px;
-    bottom: 34px;
+    bottom: 14px;
     max-width: 820px;
     color: var(--color-blanco);
     z-index: 1;
@@ -352,6 +363,8 @@ h5 {
 
 .heroContent h1 {
     margin-bottom: 1rem;
+    font-size: 2.5rem;
+    line-height: 1.1;
 }
 
 .heroContent h6 {
@@ -360,16 +373,167 @@ h5 {
     color: rgba(249, 249, 249, 0.92);
 }
 
+.heroContent h5 {
+    opacity: 0.75;
+    font-size: 1.15rem;
+    line-height: 1.5;
+}
+
 .heroContent p {
     max-width: 680px;
     color: rgba(249, 249, 249, 0.92);
 }
 
-@media (max-width: 820px) {
+@media (max-width: 1366px) and (min-width: 821px) {
     .heroContent {
-        left: 24px;
-        right: 24px;
-        bottom: 44px;
+        bottom: 24px;
+    }
+
+    .heroContent h1 {
+        font-size: 2.3rem;
+        line-height: 1.08;
+        margin-bottom: 0.9rem;
+    }
+
+    .heroContent h5 {
+        font-size: 1.05rem;
+        line-height: 1.5;
+    }
+}
+
+@media (max-width: 820px) {
+    .hero {
+        display: flex;
+        align-items: flex-end;
+        background-image: var(--hero-image-mobile, var(--hero-image));
+        background-position: 70% calc(18% + var(--hero-parallax, 0px));
+    }
+
+    .hero::before {
+        background: linear-gradient(0deg,
+                rgba(9, 22, 41, 0.78) 0%,
+                rgba(9, 22, 41, 0.6) 35%,
+                rgba(9, 22, 41, 0.22) 60%);
+    }
+
+    .heroContent {
+        position: relative;
+        left: auto;
+        right: auto;
+        bottom: auto;
+        max-width: none;
+        width: min(560px, 100%);
+        text-align: left;
+        padding: 0 120px 56px 16px;
+    }
+
+    .heroContent h5 {
+        display: none;
+    }
+}
+
+@media (max-width: 560px) {
+    .heroContent {
+        width: min(420px, 100%);
+        padding: 0 104px 44px 12px;
+    }
+
+    .hero {
+        background-position: 76% calc(18% + var(--hero-parallax, 0px));
+    }
+
+    .heroContent h1 {
+        font-size: clamp(1.65rem, 6.2vw, 2.15rem);
+        line-height: 1.12;
+        margin-bottom: 0.75rem;
+    }
+
+    .heroContent h5 {
+        font-size: 1rem;
+        line-height: 1.55;
+    }
+}
+
+@media (max-width: 820px) {
+    .services {
+        padding: 64px 0 72px;
+    }
+
+    .servicesInner {
+        padding: 0 20px;
+    }
+
+    .servicesTitle {
+        margin-bottom: 28px;
+    }
+
+    .servicesTitle h2 {
+        font-size: var(--fs-h3, 1.65rem);
+        line-height: 1.15;
+    }
+
+    .servicesUnderline {
+        margin-top: 10px;
+        width: 84px;
+    }
+
+    .serviceCard {
+        padding: 26px 20px;
+    }
+
+    .serviceIcon {
+        margin-bottom: 14px;
+        height: 48px;
+    }
+
+    .serviceIcon svg {
+        width: 38px;
+        height: 38px;
+    }
+
+    .serviceCard h4 {
+        margin-bottom: 10px;
+        font-size: 1.25rem;
+        line-height: 1.2;
+        min-height: 0;
+    }
+
+    .serviceCard p {
+        font-size: var(--fs-p, 1rem);
+        line-height: 1.6;
+        padding: 0;
+    }
+
+    .serviceCta {
+        padding-top: 16px;
+    }
+
+    .serviceCta svg {
+        width: 34px;
+        height: 35px;
+    }
+
+    .reviews {
+        padding: 64px 0 72px;
+    }
+
+    .reviewsInner {
+        padding: 0 20px;
+    }
+
+    .reviewsTitle {
+        margin-bottom: 28px;
+        text-align: left;
+    }
+
+    .reviewsTitle h2 {
+        font-size: var(--fs-h3, 1.65rem);
+        line-height: 1.15;
+    }
+
+    .reviewsUnderline {
+        margin-top: 10px;
+        width: 96px;
     }
 }
 
@@ -381,10 +545,10 @@ h5 {
     --reveal-cards-opacity: 1;
     --reveal-cards-y: 0px;
     background-image:
-        linear-gradient(0deg, rgba(9, 22, 41, 0.82) 0%, rgba(9, 22, 41, 0.82) 100%),
+        linear-gradient(0deg, rgba(9, 22, 41, 0.6) 0%, rgba(9, 22, 41, 0.6) 100%),
         var(--services-image);
     background-size: cover;
-    background-position: center calc(50% + var(--services-parallax, 0px));
+    background-position: center calc(40% + var(--services-parallax, 0px));
     will-change: background-position;
 }
 
@@ -394,7 +558,7 @@ h5 {
 }
 
 .servicesTitle {
-    text-align: center;
+    text-align: left;
     color: var(--color-blanco);
     margin-bottom: 48px;
     opacity: var(--reveal-title-opacity);
@@ -532,11 +696,15 @@ h5 {
     .servicesGrid {
         grid-template-columns: 1fr;
     }
+
+    .serviceCard {
+        padding: 22px 18px;
+    }
 }
 
 .reviews {
     background: var(--color-azul);
-    padding: 80px 0;
+    padding: 88px 0 96px;
     --reveal-title-opacity: 1;
     --reveal-title-y: 0px;
     --reveal-cards-opacity: 1;
@@ -545,13 +713,13 @@ h5 {
 
 .reviewsInner {
     margin: 0 auto;
-    padding: 0 129px;
+    padding: 0 128px;
 }
 
 .reviewsTitle {
-    text-align: center;
+    text-align: right;
     color: var(--color-blanco);
-    margin-bottom: 56px;
+    margin-bottom: 48px;
     opacity: var(--reveal-title-opacity);
     transform: translateY(var(--reveal-title-y));
     transition: opacity 160ms linear, transform 160ms linear;
@@ -572,7 +740,10 @@ h5 {
 .reviewsGrid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 28px;
+    gap: 32px;
+    align-items: end;
+    padding-top: 0;
+    --review-content-start: 32px;
 }
 
 .review {
@@ -580,36 +751,51 @@ h5 {
     justify-items: center;
     text-align: center;
     opacity: var(--reveal-cards-opacity);
-    transform: translateY(var(--reveal-cards-y));
+    transform: translateY(calc(var(--reveal-cards-y) + var(--review-offset-y, 0px)));
     transition: opacity 160ms linear, transform 160ms linear;
 }
+
+
 
 .reviewBubble {
     width: 100%;
     background: var(--color-blanco);
     color: var(--color-azul);
     border-radius: 18px;
-    padding: 44px 40px;
+    padding: 32px;
     position: relative;
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
+
+.review:nth-child(2) .reviewBubble,
+.review:nth-child(3) .reviewBubble {
+    justify-content: flex-start;
+    padding-top: var(--review-content-start);
+}
+
+
 
 .reviewBubble::after {
     content: '';
     position: absolute;
     left: 50%;
-    bottom: -14px;
+    bottom: -16px;
     transform: translateX(-50%);
     width: 0;
     height: 0;
-    border-left: 14px solid transparent;
-    border-right: 14px solid transparent;
-    border-top: 14px solid var(--color-blanco);
+    border-left: 16px solid transparent;
+    border-right: 16px solid transparent;
+    border-top: 16px solid var(--color-blanco);
 }
 
 .reviewBubbleTitle {
-    margin: 0 0 18px;
+    margin: 0 0 16px;
     font-size: 1.5rem;
     font-weight: 700;
+    width: 100%;
 }
 
 .reviewBubbleText {
@@ -617,23 +803,17 @@ h5 {
     font-size: 1.05rem;
     line-height: 25px;
     color: rgba(9, 22, 41, 0.8);
+    width: 100%;
 }
 
 .reviewPerson {
     display: grid;
     justify-items: center;
-    margin-top: 28px;
-}
-
-.reviewAvatar {
-    width: 64px;
-    height: 64px;
-    border-radius: 999px;
-    object-fit: cover;
+    margin-top: 32px;
 }
 
 .reviewPersonText {
-    margin-top: 18px;
+    margin-top: 0;
     color: var(--color-blanco);
 }
 
@@ -652,8 +832,19 @@ h5 {
         padding: 0 24px;
     }
 
+    .reviewsTitle {
+        margin-bottom: 40px;
+    }
+
     .reviewsGrid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+        padding-top: 0;
+    }
+
+    .review:nth-child(1),
+    .review:nth-child(2),
+    .review:nth-child(3) {
+        --review-offset-y: 0px;
     }
 }
 
@@ -663,7 +854,27 @@ h5 {
     }
 
     .reviewBubble {
-        padding: 38px 28px;
+        padding: 24px;
+        min-height: 0;
+    }
+
+    .reviewBubbleTitle {
+        font-size: 1.25rem;
+        margin-bottom: 12px;
+    }
+
+    .reviewBubbleText {
+        font-size: 1rem;
+        line-height: 1.65;
+    }
+
+    .reviewPersonName {
+        font-size: 1.25rem;
+    }
+
+    .reviewPersonRole {
+        font-size: 0.98rem;
+        line-height: 1.5;
     }
 }
 </style>

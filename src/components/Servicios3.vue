@@ -79,7 +79,7 @@ onBeforeUnmount(() => {
 <template>
     <Header />
 
-    <section class="servicesHero" :style="{ '--services-hero-image': `url(${bannerImgUrl})` }"
+    <section class="servicesHero paperFilm" :style="{ '--services-hero-image': `url(${bannerImgUrl})` }"
         aria-label="Gobierno Corporativo">
         <div class="servicesHeroInner">
             <h1 class="servicesHeroTitle">
@@ -90,7 +90,7 @@ onBeforeUnmount(() => {
     </section>
 
     <div class="descripcion">
-        <div class="col1">
+        <div class="col1 paperFilm">
             <img class="media" :src="descripcionImgUrl" alt="" />
         </div>
         <div class="col2">
@@ -153,7 +153,7 @@ onBeforeUnmount(() => {
             </ul>
         </div>
 
-        <div class="col2">
+        <div class="col2 paperFilm">
             <img class="media" :src="ofrecemosImgUrl" alt="" />
         </div>
     </div>
@@ -164,6 +164,31 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
+.paperFilm {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    --paper-film-opacity: 0.16;
+    --paper-film-size: 520px;
+    --paper-film-texture: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)' opacity='.42'/%3E%3C/svg%3E");
+}
+
+.paperFilm::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: var(--paper-film-texture);
+    background-repeat: repeat;
+    background-size: var(--paper-film-size) var(--paper-film-size);
+    opacity: var(--paper-film-opacity);
+    mix-blend-mode: multiply;
+    pointer-events: none;
+}
+
+.paperFilm .media {
+    filter: contrast(1.02) saturate(0.96);
+}
+
 .servicesHero {
     position: relative;
 
@@ -372,6 +397,53 @@ onBeforeUnmount(() => {
         grid-template-columns: 1fr;
     }
 
+    .descripcion {
+        grid-template-rows: 1fr;
+    }
+
+    .descripcion .col1,
+    .descripcion .col2 {
+        grid-row: 1;
+        grid-column: 1;
+    }
+
+    .descripcion .col1 {
+        position: relative;
+    }
+
+    .descripcion .col1::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: color-mix(in srgb, var(--color-azul) 70%, transparent);
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    .descripcion .col1 .media {
+        position: relative;
+        z-index: 0;
+        filter: brightness(0.78) saturate(0.9);
+    }
+
+    .descripcion .col2 {
+        background: transparent;
+        color: var(--color-blanco);
+        padding: 0;
+        position: relative;
+        z-index: 2;
+        display: grid;
+        place-items: center;
+    }
+
+    .descripcion .col2 h5 {
+        padding: 36px 32px;
+        max-width: 46ch;
+        text-wrap: pretty;
+        font-size: var(--fs-p, 1rem);
+        line-height: 1.7;
+    }
+
     .descripcion .col1,
     .descripcion .col2,
     .ofrecemos .col1,
@@ -379,25 +451,45 @@ onBeforeUnmount(() => {
         min-height: 280px;
     }
 
-    .descripcion .col2,
     .ofrecemos .col1 {
-        padding: 36px 32px;
+        padding: 48px 28px;
+    }
+
+    .ofrecemos .col1 h2 {
+        font-size: var(--fs-h4, 1.5rem);
+        line-height: 1.18;
+    }
+
+    .ofrecemos .col1 h6 {
+        font-size: 0.98rem;
+        line-height: 1.65;
+    }
+
+    .ofrecemosText {
+        font-size: 0.95rem;
+        line-height: 1.5;
     }
 }
 
 @media (max-width: 820px) {
     .servicesHero {
-        height: 260px;
+        height: 120px;
     }
 
     .servicesHeroInner {
-        padding-left: 24px;
-        padding-right: 24px;
-        padding-bottom: 28px;
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-bottom: 10px;
     }
 
     .servicesHeroTitle {
-        font-size: var(--fs-h2);
+        font-size: var(--fs-h4, 1.5rem);
+        line-height: 1.15;
+    }
+
+    .paperFilm {
+        --paper-film-opacity: 0.2;
+        --paper-film-size: 420px;
     }
 }
 </style>

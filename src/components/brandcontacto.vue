@@ -162,6 +162,32 @@ onBeforeUnmount(() => {
     filter: brightness(0.98);
 }
 
+@media (max-width: 820px) {
+    .brandHero {
+        height: 220px;
+        padding: 0 20px;
+        background-position: center 12%;
+    }
+
+    .brandHeroTitle {
+        font-size: var(--fs-h3, 1.65rem);
+        line-height: 1.15;
+    }
+
+    .brandHeroSubtitle {
+        margin-top: 10px;
+        font-size: var(--fs-p, 1rem);
+        line-height: 1.6;
+    }
+
+    .brandHeroButton {
+        margin-top: 18px;
+        font-size: 1.05rem;
+        padding: 12px 32px;
+        border-radius: 12px;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
 
     .brandHeroTitle,

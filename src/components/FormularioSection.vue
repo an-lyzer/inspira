@@ -191,8 +191,9 @@ onBeforeUnmount(() => {
 
                         <label class="field">
                             <span class="label">Servicio a Consultar</span>
-                            <select class="input select" name="servicio" v-model="form.servicio" required>
-                                <option value="" disabled>Selecciona un servicio</option>
+                            <select class="input select" name="servicio" v-model="form.servicio" required
+                                :class="{ 'select--placeholder': !form.servicio }">
+                                <option value="" disabled hidden>Elige un servicio</option>
                                 <option value="Transformación Operacional">Transformación Operacional</option>
                                 <option value="Asesoría Financiera">Asesoría Financiera</option>
                                 <option value="Estructuración Patrimonial">Estructuración Patrimonial</option>
@@ -377,6 +378,11 @@ onBeforeUnmount(() => {
     color: var(--color-azul);
 }
 
+.select--placeholder {
+    color: rgba(9, 22, 41, 0.4);
+    font-weight: 400;
+}
+
 .select:invalid {
     color: rgba(9, 22, 41, 0.4);
     font-weight: 400;
@@ -440,12 +446,81 @@ onBeforeUnmount(() => {
         align-items: start;
     }
 
+    .formLeft {
+        max-width: none;
+    }
+
+    .formIcon {
+        width: 68px;
+        height: 68px;
+        margin-bottom: 18px;
+    }
+
+    .formIconSvg {
+        width: 30px;
+        height: 28px;
+    }
+
     .formTitle {
-        font-size: var(--fs-h2);
+        font-size: var(--fs-h3, 1.65rem);
+        line-height: 1.15;
+    }
+
+    .formSubtitle {
+        font-size: var(--fs-p, 1rem);
+        line-height: 1.65;
+        max-width: 60ch;
+    }
+
+    .formCardTitle {
+        font-size: var(--fs-h5, 1.25rem);
+        line-height: 1.3;
+        margin-bottom: 16px;
     }
 
     .formCardInner {
         padding: 24px;
+    }
+
+    .form {
+        gap: 12px;
+    }
+
+    .label {
+        font-size: 0.95rem;
+    }
+
+    .input {
+        height: 46px;
+        padding: 0 12px;
+        font-size: 1rem;
+    }
+
+    .select {
+        background-position: right 12px center;
+        padding-right: 38px;
+    }
+
+    .textarea {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .submit {
+        height: 50px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 560px) {
+    .formSectionInner {
+        padding-left: 16px;
+        padding-right: 16px;
+        gap: 22px;
+    }
+
+    .formCardInner {
+        padding: 20px;
     }
 }
 </style>

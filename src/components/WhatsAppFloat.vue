@@ -44,4 +44,16 @@ const whatsappHref = `https://wa.me/${whatsappPhone}`
     border-radius: 999px;
     display: block;
 }
+
+@media (max-width: 820px) {
+    .whatsappFloat {
+        right: 16px;
+    }
+}
+
+@media (max-width: 420px) {
+    .whatsappFloat {
+        right: 8px;
+    }
+}
 </style>

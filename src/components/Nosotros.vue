@@ -2,7 +2,7 @@
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import Header from './header.vue'
 import heroBgUrl from '../assets/images/business-team-concept.jpg'
-import misionIconUrl from '../assets/images/vecteezy_missile.svg'
+import misionIconSvg from '../assets/images/vecteezy_missile.svg?raw'
 import Miembros from './Miembros.vue';
 import Footer from './footer.vue';
 
@@ -92,16 +92,21 @@ onBeforeUnmount(() => {
     <div class="quienessomos">
 
         <h2>¿Quiénes somos?</h2>
-        <h5>Somos una empresa de asesoría financiera dedicada a ayudar a nuestros clientes a alcanzar sus objetivos
-            financieros. Con un equipo de expertos en finanzas, ofrecemos soluciones personalizadas y estrategias
-            efectivas para maximizar el crecimiento y la rentabilidad de nuestros clientes.</h5>
+        <h5>
+            Somos una firma boutique de asesoría estratégica y financiera que acompaña a accionistas y familias
+            empresarias en la toma de decisiones clave. Combinamos análisis riguroso, experiencia empresarial y una
+            mirada de largo plazo para ordenar la gestión, fortalecer el gobierno corporativo y proteger el
+            patrimonio.
+        </h5>
         <div class="misionVisionWrap">
             <div class="mision">
                 <h4>Misión</h4>
-                <img class="misionIcon" :src="misionIconUrl" alt="" aria-hidden="true" />
-                <h6>Ayudamos a empresas y familias empresarias a tomar mejores decisiones, ordenar su gestión y
-                    maximizar
-                    su valor mediante estrategia financiera, gobierno corporativo, tecnología y visión patrimonial.</h6>
+                <span class="misionIcon" aria-hidden="true" v-html="misionIconSvg"></span>
+                <h6>
+                    Acompañamos a accionistas y familias empresarias a potenciar sus negocios, ordenar su gestión
+                    financiera y de gobierno corporativo, y preparar sus empresas para crecer, institucionalizarse y
+                    trascender con éxito hacia la siguiente generación.
+                </h6>
             </div>
             <div class="vision">
                 <h4>Visión</h4>
@@ -130,9 +135,11 @@ onBeforeUnmount(() => {
                         </clipPath>
                     </defs>
                 </svg>
-                <h6>Ser la firma boutique peruana referente en asesoría estratégica, financiera y patrimonial para
+                <h6>
+                    Ser la firma boutique peruana referente en asesoría estratégica, financiera y patrimonial para
                     empresas y familias empresarias que buscan profesionalizar su gestión, fortalecer su gobierno
-                    corporativo y construir un legado sostenible.</h6>
+                    corporativo y construir un legado sostenible.
+                </h6>
             </div>
         </div>
 
@@ -140,8 +147,14 @@ onBeforeUnmount(() => {
     <div ref="valoresRef" class="valores">
         <div class="valores_inner">
             <div class="valoresTitle">
-                <h2>Nuestros valores</h2>
+                <h2>Nuestros valores
+                </h2>
             </div>
+            <p class="valores_texto">
+                Ellos guían cada recomendación y cada conversación con nuestros clientes. Nos comprometemos a
+                escuchar, analizar con rigor y actuar con transparencia para construir decisiones financieras sólidas y
+                un legado sostenible.
+            </p>
 
             <div class="valores_cards">
                 <div class="valorCard">
@@ -169,14 +182,15 @@ onBeforeUnmount(() => {
 
                 <div class="valorCard">
                     <div class="valorIcon" aria-hidden="true">
-                        <svg viewBox="0 0 45 51" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" clip-rule="evenodd"
-                                d="M11.2779 0.456333C11.8505 -0.0381284 12.6658 -0.140488 13.3437 0.196982L17.5032 2.2676L21.6619 0.197037C22.1895 -0.0656444 22.8105 -0.0656444 23.3381 0.197036L27.4968 2.2676L31.6563 0.196982C32.3342 -0.140488 33.1495 -0.0381284 33.7221 0.456333C34.2947 0.950794 34.5117 1.73998 34.272 2.45591L33.1608 5.77527C33.9804 5.45613 34.8407 5.1611 35.7068 4.9201C36.9915 4.56261 38.3589 4.30405 39.6639 4.29157C40.9543 4.27923 42.3494 4.50643 43.5284 5.289C44.3895 5.86061 44.6222 7.01906 44.0481 7.87647C43.474 8.73389 42.3106 8.96558 41.4495 8.39397C41.1293 8.18142 40.5776 8.01471 39.6999 8.02311C38.8369 8.03136 37.8149 8.20817 36.7155 8.51409C35.8583 8.75261 34.9966 9.05748 34.1836 9.38655C41.1215 13.9033 45.2739 22.848 44.9859 31.1619C44.8164 36.056 43.1133 40.8885 39.4019 44.5838C35.6832 48.2865 30.1259 50.6716 22.5814 50.9982C22.5272 51.0006 22.4728 51.0006 22.4186 50.9982C14.8741 50.6716 9.31677 48.2865 5.59807 44.5838C1.88669 40.8885 0.183604 36.056 0.0140669 31.1619C-0.298982 22.125 4.6342 12.3429 12.6885 8.31204L10.728 2.45591C10.4883 1.73998 10.7053 0.950794 11.2779 0.456333ZM14.9166 11.3878C8.10857 14.4601 3.47902 22.9311 3.75969 31.0333C3.90256 35.1575 5.32276 39.0323 8.2482 41.9451C11.1547 44.8391 15.7228 46.9578 22.5 47.2664C29.2772 46.9578 33.8453 44.8391 36.7518 41.9451C39.6772 39.0323 41.0974 35.1575 41.2403 31.0333C41.5222 22.8945 36.8496 14.3837 29.9912 11.3465C23.4656 13.8745 17.7996 12.7203 14.9166 11.3878ZM28.4913 7.92271C23.0538 9.98058 18.5259 8.92868 16.5434 8.02643L15.7141 5.54905L16.6653 6.02258C17.1929 6.28521 17.8138 6.28519 18.3414 6.02252L22.5 3.952L26.6586 6.02252C27.1862 6.28519 27.8071 6.28521 28.3347 6.02258L29.2859 5.54905L28.4913 7.92271Z"
+                                d="M16.0002 12C16.0002 14.2091 14.2094 16 12.0002 16C9.79111 16 8.00024 14.2091 8.00024 12C8.00024 9.79086 9.79111 8 12.0002 8C14.2094 8 16.0002 9.79086 16.0002 12ZM14.5002 12C14.5002 13.3807 13.381 14.5 12.0002 14.5C10.6195 14.5 9.50024 13.3807 9.50024 12C9.50024 10.6193 10.6195 9.5 12.0002 9.5C13.381 9.5 14.5002 10.6193 14.5002 12Z"
                                 fill="currentColor" />
                             <path fill-rule="evenodd" clip-rule="evenodd"
-                                d="M22.262 20.2134C23.1245 20.2134 23.8236 20.9096 23.8236 21.7683V21.7848C26.7651 22.0884 29.0587 24.5641 29.0587 27.5732C29.0587 28.4319 28.3596 29.1281 27.4971 29.1281C26.6347 29.1281 25.9355 28.4319 25.9355 27.5732C25.9355 26.2853 25.0332 25.2072 23.8236 24.9315V29.2174C26.7217 29.257 29.0587 31.6085 29.0587 34.5035C29.0587 37.3985 26.7216 39.75 23.8236 39.7896C23.8159 40.6417 23.1197 41.3301 22.262 41.3301C21.3996 41.3301 20.7004 40.634 20.7004 39.7753V39.6899C17.9912 39.1831 15.9412 36.8151 15.9412 33.9704C15.9412 33.1117 16.6404 32.4155 17.5028 32.4155C18.3653 32.4155 19.0645 33.1117 19.0645 33.9704C19.0645 35.0828 19.7376 36.0386 20.7004 36.4561V32.2986C18.0267 32.0245 15.9412 29.7748 15.9412 27.0401C15.9412 24.3054 18.0267 22.0557 20.7004 21.7815V21.7683C20.7004 20.9096 21.3996 20.2134 22.262 20.2134ZM20.7004 24.9328C19.7594 25.1757 19.0645 26.0271 19.0645 27.0401C19.0645 28.0531 19.7594 28.9044 20.7004 29.1474V24.9328ZM23.8236 32.3279V36.6791C24.9966 36.6401 25.9355 35.6809 25.9355 34.5035C25.9355 33.326 24.9966 32.3669 23.8236 32.3279Z"
+                                d="M2.39213 12.7884C2.24299 12.2738 2.24299 11.7262 2.39213 11.2116C3.59931 7.0456 7.44308 4 11.9982 4C16.5533 4 20.3971 7.0456 21.6043 11.2116C21.7534 11.7262 21.7534 12.2738 21.6043 12.7884C20.3971 16.9544 16.5533 20 11.9982 20C7.44308 20 3.59931 16.9544 2.39213 12.7884ZM3.83286 11.6291C4.85923 8.08706 8.12854 5.5 11.9982 5.5C15.8678 5.5 19.1372 8.08706 20.1635 11.6291C20.2336 11.871 20.2336 12.129 20.1635 12.3709C19.1372 15.9129 15.8678 18.5 11.9982 18.5C8.12854 18.5 4.85923 15.9129 3.83286 12.3709C3.76275 12.129 3.76275 11.871 3.83286 11.6291Z"
                                 fill="currentColor" />
                         </svg>
+
                     </div>
                     <h3>Vision estratégica</h3>
                     <p>Analizamos cada decisión con rigor financiero y enfoque empresarial, identificando
@@ -198,6 +212,8 @@ onBeforeUnmount(() => {
                         el tiempo.</p>
                 </div>
             </div>
+
+
         </div>
     </div>
     <Miembros></Miembros>
@@ -245,17 +261,18 @@ onBeforeUnmount(() => {
 
 @media (max-width: 820px) {
     .banner_nosotros {
-        height: 260px;
+        height: 130px;
     }
 
     .banner_nosotros_inner {
-        padding-left: 24px;
-        padding-right: 24px;
-        padding-bottom: 28px;
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-bottom: 10px;
     }
 
     .banner_nosotros_title {
-        font-size: var(--fs-h2);
+        font-size: var(--fs-h3, 1.65rem);
+        line-height: 1.15;
     }
 }
 
@@ -291,7 +308,8 @@ onBeforeUnmount(() => {
     margin: 26px auto 0;
     max-width: 980px;
     padding: 5px 24px;
-    line-height: 1.36;
+    font-size: var(--fs-h6);
+    line-height: 1.55;
     font-weight: 400;
     color: var(--color-azul);
 }
@@ -310,7 +328,7 @@ onBeforeUnmount(() => {
 .mision,
 .vision {
     display: grid;
-    grid-template-rows: auto 220px auto;
+    grid-template-rows: auto 160px auto;
     justify-items: center;
     align-items: start;
     text-align: center;
@@ -328,12 +346,23 @@ onBeforeUnmount(() => {
 .misionIcon,
 .visionIcon {
     display: block;
-    width: min(260px, 100%);
-    height: 190px;
+    width: min(220px, 100%);
+    height: 160px;
     object-fit: contain;
     object-position: center;
     align-self: center;
     color: var(--color-azul);
+}
+
+:deep(.misionIcon svg) {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+:deep(.misionIcon svg path) {
+    fill: currentColor !important;
+    stroke: currentColor !important;
 }
 
 .mision h6,
@@ -350,9 +379,46 @@ onBeforeUnmount(() => {
         padding: 64px 0 40px;
     }
 
+    .quienessomos h2 {
+        font-size: var(--fs-h3, 1.65rem);
+        padding-bottom: 14px;
+    }
+
+    .quienessomos>h5 {
+        margin-top: 18px;
+        font-size: var(--fs-p, 1rem);
+        line-height: 1.65;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
     .misionVisionWrap {
         grid-template-columns: 1fr;
         row-gap: 44px;
+    }
+
+    .mision,
+    .vision {
+        grid-template-rows: auto 150px auto;
+    }
+
+    .mision h4,
+    .vision h4 {
+        margin-bottom: 16px;
+        font-size: var(--fs-h4, 1.5rem);
+        line-height: 1.2;
+    }
+
+    .misionIcon,
+    .visionIcon {
+        height: 130px;
+    }
+
+    .mision h6,
+    .vision h6 {
+        max-width: 52ch;
+        font-size: var(--fs-p, 1rem);
+        line-height: 1.65;
     }
 }
 
@@ -368,14 +434,6 @@ onBeforeUnmount(() => {
     --valores-title-y: 0px;
     --valores-cards-opacity: 1;
     --valores-cards-y: 0px;
-}
-
-@supports (background: color-mix(in srgb, black, white)) {
-    .valores {
-        background-image: linear-gradient(180deg,
-                color-mix(in srgb, var(--color-azul) 92%, var(--color-blanco) 8%) 0%,
-                var(--color-azul) 100%);
-    }
 }
 
 .valores_inner {
@@ -465,6 +523,14 @@ onBeforeUnmount(() => {
     color: var(--color-azul);
 }
 
+.valores_texto {
+    margin: 44px auto 0;
+    max-width: 860px;
+    font-size: var(--fs-h6);
+    line-height: 1.7;
+    color: var(--color-blanco);
+}
+
 @media (max-width: 1100px) {
     .valores_cards {
         gap: 28px;
@@ -480,9 +546,41 @@ onBeforeUnmount(() => {
         padding: 64px 0 72px;
     }
 
+    .valores_inner h2 {
+        font-size: var(--fs-h3, 1.65rem);
+        padding-bottom: 14px;
+    }
+
+    .valores_texto {
+        margin-top: 26px;
+        font-size: var(--fs-p, 1rem);
+        line-height: 1.7;
+    }
+
     .valores_cards {
         grid-template-columns: 1fr;
         gap: 22px;
+    }
+
+    .valorCard {
+        padding: 34px 24px;
+        min-height: 0;
+    }
+
+    .valorIcon {
+        width: 56px;
+        height: 56px;
+        margin-bottom: 16px;
+    }
+
+    .valorCard h3 {
+        font-size: var(--fs-h5, 1.25rem);
+        line-height: 1.2;
+    }
+
+    .valorCard p {
+        font-size: var(--fs-p, 1rem);
+        line-height: 1.65;
     }
 }
 

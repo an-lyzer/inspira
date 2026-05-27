@@ -1,5 +1,5 @@
 <script setup>
-import logoUrl from '../assets/images/logo.jpeg'
+import logoUrl from '../assets/images/logopng.png'
 </script>
 
 <template>
@@ -16,16 +16,20 @@ import logoUrl from '../assets/images/logo.jpeg'
                 <h4 class="footerTitle">Servicios</h4>
                 <ul class="footerList">
                     <li>
-                        <RouterLink class="footerLink" :to="{ name: 'Asesoriafinanciera' }">Asesoría Financiera</RouterLink>
+                        <RouterLink class="footerLink" :to="{ name: 'Asesoriafinanciera' }">Asesoría Financiera
+                        </RouterLink>
                     </li>
                     <li>
-                        <RouterLink class="footerLink" :to="{ name: 'estructuracionPatrimonial' }">Estructuración Patrimonial</RouterLink>
+                        <RouterLink class="footerLink" :to="{ name: 'estructuracionPatrimonial' }">Estructuración
+                            Patrimonial</RouterLink>
                     </li>
                     <li>
-                        <RouterLink class="footerLink" :to="{ name: 'gobiernoCorporativo' }">Gobierno Corporativo</RouterLink>
+                        <RouterLink class="footerLink" :to="{ name: 'gobiernoCorporativo' }">Gobierno Corporativo
+                        </RouterLink>
                     </li>
                     <li>
-                        <RouterLink class="footerLink" :to="{ name: 'transformacionOperacional' }">Transformación Operacional</RouterLink>
+                        <RouterLink class="footerLink" :to="{ name: 'transformacionOperacional' }">Transformación
+                            Operacional</RouterLink>
                     </li>
                 </ul>
             </div>
@@ -33,8 +37,12 @@ import logoUrl from '../assets/images/logo.jpeg'
             <div class="footerCol">
                 <h4 class="footerTitle">Acerca de</h4>
                 <ul class="footerList">
-                    <li><RouterLink class="footerLink" :to="{ name: 'nosotros' }">Nosotros</RouterLink></li>
-                    <li><RouterLink class="footerLink" :to="{ name: 'contacto' }">Contacto</RouterLink></li>
+                    <li>
+                        <RouterLink class="footerLink" :to="{ name: 'nosotros' }">Nosotros</RouterLink>
+                    </li>
+                    <li>
+                        <RouterLink class="footerLink" :to="{ name: 'contacto' }">Contacto</RouterLink>
+                    </li>
                 </ul>
             </div>
 
@@ -42,16 +50,22 @@ import logoUrl from '../assets/images/logo.jpeg'
                 <h4 class="footerTitle">Ayuda</h4>
                 <ul class="footerList">
                     <!-- <li><a class="footerLink" href="#">Preguntas</a></li> -->
-                    <li><a class="footerLink" href="#">Terms of service</a></li>
-                    <li><a class="footerLink" href="#">Legal</a></li>
-                    <li><a class="footerLink" href="#">Privacy Policy</a></li>
+                    <li>
+                        <RouterLink class="footerLink" :to="{ name: 'terminosServicio' }">Terms of service</RouterLink>
+                    </li>
+                    <li>
+                        <RouterLink class="footerLink" :to="{ name: 'avisoLegal' }">Legal</RouterLink>
+                    </li>
+                    <li>
+                        <RouterLink class="footerLink" :to="{ name: 'politicaPrivacidad' }">Privacy Policy</RouterLink>
+                    </li>
                 </ul>
             </div>
 
             <div class="footerCol">
                 <h4 class="footerTitle">Siguenos</h4>
                 <ul class="footerList">
-                    
+
                     <li><a class="footerLink" href="#">LinkedIn</a></li>
                 </ul>
             </div>

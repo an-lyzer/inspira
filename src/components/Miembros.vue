@@ -324,6 +324,26 @@ onBeforeUnmount(() => {
     opacity: 0.7;
 }
 
+@media (max-width: 1366px) and (min-width: 1121px) {
+    .specialistRole {
+        font-size: 0.85rem;
+        line-height: 1.3;
+        min-height: 0;
+    }
+
+    .specialistName {
+        margin-top: 16px;
+        font-size: 0.85rem;
+    }
+
+    .specialistBio {
+        margin-top: 10px;
+        max-width: 25rem;
+        font-size: 0.85rem;
+        line-height: 1.28;
+    }
+}
+
 @media (max-width: 1120px) {
     .specialistsGrid {
         grid-template-columns: 1fr;
@@ -334,6 +354,11 @@ onBeforeUnmount(() => {
     .specialistsHeader {
         padding: 0 24px;
         margin-bottom: 54px;
+    }
+
+    .specialistsTitle {
+        font-size: var(--fs-h3, 1.65rem);
+        line-height: 1.15;
     }
 
     .specialistsGrid {
@@ -355,11 +380,45 @@ onBeforeUnmount(() => {
         width: min(100%, 288px);
         height: 297px;
     }
+
+    .specialistExperience {
+        font-size: 1rem;
+    }
+
+    .specialistRole {
+        font-size: 1rem;
+        line-height: 1.35;
+        min-height: 0;
+    }
+
+    .specialistName {
+        margin-top: 14px;
+        font-size: 1.25rem;
+    }
+
+    .specialistBio {
+        font-size: 0.98rem;
+        line-height: 1.55;
+        max-width: 48ch;
+        opacity: 0.78;
+    }
 }
 
 @media (max-width: 420px) {
-    .specialistBio {
+    .specialistsTitle {
+        font-size: var(--fs-h4, 1.35rem);
+    }
+
+    .specialistRole {
+        font-size: 0.95rem;
+    }
+
+    .specialistName {
         font-size: 1.15rem;
+    }
+
+    .specialistBio {
+        font-size: 0.95rem;
     }
 }
 </style>
